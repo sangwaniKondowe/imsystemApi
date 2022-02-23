@@ -1,10 +1,11 @@
 import React from 'react'
 
-export const dashboard = () => {
+function dashboard () {
     return (
         <div>
-            hello dashboard
-            
+            Hello dashboard
         </div>
     )
 }
+
+export default dashboard
