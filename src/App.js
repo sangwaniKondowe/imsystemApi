@@ -20,7 +20,7 @@ import Scholarships from './Components/Scholarships'
 import {BrowserRouter,Route,Switch} from 'react-router-dom'
 import Dashboard from './Components/Dashboard';
 
-const drawerWidth = 240;
+const drawerWidth = 300;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -82,6 +82,10 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
+  container:{
+    width: "180px"
+  }
+
 }));
 
 
@@ -107,9 +111,9 @@ function App() {
   },{
     text: "Scholarships"
   },{
-    text: "applicants"
+    text: "Applicants"
   },{
-    text:"beneficiaries"
+    text:"Beneficiaries"
   }]
 
   // "DashboardIcon","PeopleIcon","SchoolIcon","PersonIcon "
@@ -157,6 +161,7 @@ function App() {
             [classes.drawerClose]: !open,
           }),
         }}
+        className = {classes.container}
       >
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawerClose}>
@@ -164,6 +169,16 @@ function App() {
           </IconButton>
         </div>
         <Divider />
+        <List>
+          {itemList.map((item, index) => {
+            
+          const {text} = item;
+            return (<ListItem button key={text}>
+
+            <ListItemText primary={text}/>
+            </ListItem>
+          )})}
+        </List>
         
         
       
