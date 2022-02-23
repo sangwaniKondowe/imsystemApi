@@ -1,51 +1,59 @@
 'use strict';
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Applicants', {
+  async up(queryInterface, DataTypes) {
+    await queryInterface.createTable('applicants', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: DataTypes.UUID
       },
-      fullname: {
-        type: Sequelize.STRING
+      fullName: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       YrOfStudy: {
-        type: Sequelize.INTEGER
+        type: DataTypes.INTEGER,
+        allowNull: false,
       },
       program: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       regNum: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       description: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING,
+        allowNull: false,
       },
-      typeOfScholar: {
-        type: Sequelize.STRING
+      nameOfScholar: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       accountNum: {
-        type: Sequelize.INTEGER
+        type: DataTypes.INTEGER,
+        allowNull: false,
       },
       bankName: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       religion: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: DataTypes.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: DataTypes.DATE
       }
     });
   },
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Applicants');
+  async down(queryInterface, DataTypes) {
+    await queryInterface.dropTable('applicants');
   }
 };

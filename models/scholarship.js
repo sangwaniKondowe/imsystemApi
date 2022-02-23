@@ -1,27 +1,52 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class Scholarship extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  }
-  Scholarship.init({
+'use strict'
+const dbConnection = require("../dbConnection")
+const DataTypes = require("sequelize");
+const Applicant = require("../models/applicant");
+const Award = require("./award");
+const Beneficiary = require("./beneficiary");
+const Scholarship = dbConnection.define('scholarships', {
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUID,
+    primaryKey: true
+  },
     nameOfScholarship: {
       type: DataTypes.STRING,
       allowNull: false
     },
   }, {
-    sequelize,
-    tableName: 'scholarships',
-    modelName: 'Scholarship',
+    timestamps: true
   });
-  return Scholarship;
-};
+
+  Scholarship.hasMany(Applicant, {
+    foreignKey:'scholarshipId',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
+  Applicant.belongsTo(Scholarship)
+
+
+  Award.hasMany(Applicant, {
+   foreignKey: 'awardId',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
+  Applicant.belongsTo(Award)
+
+  Award.hasMany(Beneficiary, {
+    foreignKey: 'awardId',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
+  
+  Beneficiary.belongsTo(Award)
+
+  Scholarship.hasMany(Beneficiary, {
+    foreignKey: 'scholarshipId',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
+
+  Beneficiary.belongsTo(Scholarship)
+
+module.exports = Scholarship
