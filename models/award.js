@@ -6,7 +6,7 @@ const Award = dbConnection.define('awards', {
 
   id: {
     type: DataTypes.UUID,
-    defaultValue: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV1,
     primaryKey: true
   },
     name: {

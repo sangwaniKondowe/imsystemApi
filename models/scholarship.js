@@ -7,7 +7,7 @@ const Beneficiary = require("./beneficiary");
 const Scholarship = dbConnection.define('scholarships', {
   id: {
     type: DataTypes.UUID,
-    defaultValue: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV1,
     primaryKey: true
   },
     nameOfScholarship: {

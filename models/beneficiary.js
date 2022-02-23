@@ -7,6 +7,7 @@ const Beneficiary = dbConnection.define('beneficiaries', {
 
     id: {
       type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV1,
       primaryKey: true,
       allowNull: false
     },
