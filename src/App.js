@@ -8,23 +8,29 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 import {Drawer,AppBar,
   Toolbar,List,CssBaseline,Typography,Divider, 
-  IconButton,ListItem, ListItemIcon,ListItemText, Box,DashboardIcon,PeopleIcon,SchoolIcon,PersonIcon    } from '@material-ui/core';
+  IconButton,ListItem, ListItemIcon,ListItemText, Box,} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail'
+import PeopleIcon from '@material-ui/icons/People';
+import SchoolIcon from '@material-ui/icons/School';
+import PersonIcon from '@material-ui/icons/Person';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import { blue, blueGrey,grey,white } from '@material-ui/core/colors';
 import Applicants from './Components/Applicants'
 import Beneficiaries from './Components/Beneficiaries'
 import Scholarships from './Components/Scholarships'
-import {BrowserRouter,Route,Switch} from 'react-router-dom'
+import {BrowserRouter,Route,Switch,NavLink} from 'react-router-dom'
 import Dashboard from './Components/Dashboard';
 
-const drawerWidth = 300;
+const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+  },
+  root1: {
+    flexGrow: 1,
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -52,6 +58,10 @@ const useStyles = makeStyles((theme) => ({
     flexShrink: 0,
     whiteSpace: 'nowrap',
   },
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+  },
   drawerOpen: {
     width: drawerWidth,
     transition: theme.transitions.create('width', {
@@ -78,12 +88,33 @@ const useStyles = makeStyles((theme) => ({
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
+  fixedHeight: {
+    height: 240,
+  },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(4),
   },
-  container:{
-    width: "180px"
+ 
+  wrapper:{
+    
+      padding:theme.spacing(8,12)
+    
+  },
+  navlinks:{
+    color:blueGrey["A400"],
+    "& : hover ":{
+      color : blue["A400"]
+    },
+    " & div":{
+      color: blue["A400"],
+    }
+  },
+  activeNavlinks:{
+    color: grey["A700"],
+    "& div" : {
+      color: blueGrey["A400"]
+    }
   }
 
 }));
@@ -107,17 +138,29 @@ function App() {
 
 
   const itemList = [{
-    text: "Dashboard"
-  },{
-    text: "Scholarships"
-  },{
-    text: "Applicants"
-  },{
-    text:"Beneficiaries"
-  }]
+    text: "Dashboard",
+    icon: <DashboardIcon/>,
+    link: "/"
+  },
+  {
+    text: "Scholarships",
+    icon: <SchoolIcon/>,
+    link: "/Scholarships"
 
-  // "DashboardIcon","PeopleIcon","SchoolIcon","PersonIcon "
+  },
+  {
+    text: "Applicants",
+    icon: <PeopleIcon/>,
+    link: "/applicants"
+  },
+  {
+    text:"Beneficiaries",
+    icon:<PersonIcon />,
+    link: "/beneficiaries"
+  }
+]
 
+  
 
   return (
 
@@ -169,26 +212,37 @@ function App() {
           </IconButton>
         </div>
         <Divider />
-        <List>
-          {itemList.map((item, index) => {
-            
-          const {text} = item;
-            return (<ListItem button key={text}>
 
-            <ListItemText primary={text}/>
-            </ListItem>
-          )})}
-        </List>
-        
-        
+
+
+        <List>
+
+{itemList.map((item, index) => {
+  const {text,icon} = item;
+
+  return (
+    <ListItem 
+    
+     to = {item.link} 
+     
+     key={index}>
+      {icon && <ListItemIcon>{icon}</ListItemIcon>}
+      <ListItemText primary = {text} />
+    </ListItem>
+  )
+
+})} 
+
+</List>
       
       </Drawer>
+      <main className = {classes.content}>
 
-     <Box>
+     <Box className = {classes.wrapper}>
    <BrowserRouter>
  <Switch>
  <Route exact path = "/" render={() => <Dashboard/>}/>
- <Route exact path ="/ Scholarships" render={() => < Scholarships/>}/>
+ <Route exact path ="/Scholarships" render={() => < Scholarships/>}/>
  <Route exact path ="/applicants" render={() => <Applicants/>}/>
  <Route exact path ="/beneficiaries" render={() => <Beneficiaries/>}/>
  
@@ -196,6 +250,7 @@ function App() {
  </BrowserRouter>
 
  </Box>
+ </main>
 </div>
 
  
