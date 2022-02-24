@@ -5,11 +5,16 @@ const Award = dbConnection.define('awards', {
 
 
   id: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV1,
-    primaryKey: true
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
   },
-    name: {
+  uuid: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+  },
+  name: {
       type: DataTypes.STRING},
   }, {
 

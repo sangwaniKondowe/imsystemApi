@@ -1,15 +1,34 @@
 'use strict';
+const { DataTypes } = require("sequelize");
+
 module.exports = {
-  async up(queryInterface, DataTypes) {
+  async up(queryInterface, Sequelize) {
     await queryInterface.createTable('scholarships', {
       id: {
-        allowNull: false,
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        type: DataTypes.UUID
+        autoIncrement: true,
+        allowNull: false,
       },
-      nameOfScholarship: {
+      uuid: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+      },
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      start_date: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      finish_date: {
+        type: DataTypes.DATE,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

@@ -26,6 +26,7 @@
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.16.1",
+    "sequelize-auto": "^0.8.8",
     "sequelize-cli": "^6.4.1",
     "start": "^5.1.0"
   }

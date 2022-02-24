@@ -4,27 +4,25 @@ const DataTypes = require("sequelize")
 const User = dbConnection.define('users', {
   
   // Model attributes are defined here
-
-id: {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
+  },
+  uuid: {
     type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV1,
-    primaryKey: true
+    defaultValue: DataTypes.UUIDV4,
   },
-
-  firstName: {
+  username: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  lastName: {
-    type: DataTypes.STRING,
-    allowNull: false
-    // allowNull defaults to true
-  } ,
   email:{
     type:DataTypes.STRING,
     allowNull:false
   },
-  bio:{
+  role:{
   type: DataTypes.STRING,
   allowNull:false,
   unique:true

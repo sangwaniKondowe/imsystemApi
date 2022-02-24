@@ -1,13 +1,12 @@
 "use strict";
 
-
 const { DataTypes } = require("sequelize");
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     //addcolumn("table name","foreign key")
     return await queryInterface
       .addColumn("applicants", "scholarshipId", {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         references: {
           model: "scholarships", // name of Target model
           key: "id", // key in Target model that we're referencing
@@ -16,7 +15,7 @@ module.exports = {
         onDelete: "NO ACTION",
       }).then(async () => {
         return await queryInterface.addColumn("applicants", "awardId", {
-          type: DataTypes.UUID,
+          type: DataTypes.INTEGER,
           references: {
             model: "awards", // name of Target model
             key: "id", // key in Target model that we're referencing
@@ -26,7 +25,7 @@ module.exports = {
         });
       }).then(async () => {
         return await queryInterface.addColumn("beneficiaries", "scholarshipId", {
-          type: DataTypes.UUID,
+          type: DataTypes.INTEGER,
           references: {
             model: "scholarships", // name of Target model
             key: "id", // key in Target model that we're referencing
@@ -36,7 +35,7 @@ module.exports = {
         });
       }).then(async () => {
         return await queryInterface.addColumn("beneficiaries", "awardId", {
-          type: DataTypes.UUID,
+          type: DataTypes.INTEGER,
           references: {
             model: "awards", // name of Target model
             key: "id", // key in Target model that we're referencing

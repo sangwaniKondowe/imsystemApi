@@ -1,11 +1,18 @@
 'use strict';
+const { DataTypes } = require("sequelize");
+
 module.exports = {
-  async up(queryInterface, DataTypes) {
+  async up(queryInterface, Sequelize) {
     await queryInterface.createTable('applicants', {
       id: {
-        allowNull: false,
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        type: DataTypes.UUID
+        autoIncrement: true,
+        allowNull: false,
+      },
+      uuid: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
       },
       fullName: {
         type: DataTypes.STRING,
@@ -42,6 +49,10 @@ module.exports = {
       religion: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      status: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,
