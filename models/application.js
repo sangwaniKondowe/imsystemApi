@@ -2,7 +2,7 @@
 
 const dbConnection = require("../dbConnection")
 const DataTypes = require("sequelize");
-const Applicant = dbConnection.define('applicants', {
+const Application = dbConnection.define('applications', {
 
   // Model attributes are defined here
   id: {
@@ -62,4 +62,4 @@ const Applicant = dbConnection.define('applicants', {
 
 
 
-module.exports = Applicant
+module.exports = Application

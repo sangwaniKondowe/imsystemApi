@@ -1,7 +1,7 @@
 'use strict'
 const dbConnection = require("../dbConnection")
 const DataTypes = require("sequelize");
-const Applicant = require("../models/applicant");
+const Application = require("./application");
 const Award = require("./award");
 const Beneficiary = require("./beneficiary");
 const Scholarship = dbConnection.define('scholarships', {
@@ -35,28 +35,28 @@ const Scholarship = dbConnection.define('scholarships', {
     timestamps: true
   });
 
-  Scholarship.hasMany(Applicant, {
+  Scholarship.hasMany(Application, {
     foreignKey:'scholarshipId',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   })
-  Applicant.belongsTo(Scholarship)
+  Application.belongsTo(Scholarship)
 
 
-  Award.hasMany(Applicant, {
+  Award.hasMany(Application, {
    foreignKey: 'awardId',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   })
-  Applicant.belongsTo(Award)
+  Application.belongsTo(Award)
 
-  Award.hasMany(Beneficiary, {
-    foreignKey: 'awardId',
+  Application.hasOne(Beneficiary, {
+    foreignKey: 'applicationId',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   })
   
-  Beneficiary.belongsTo(Award)
+  Beneficiary.belongsTo(Application)
 
   Scholarship.hasMany(Beneficiary, {
     foreignKey: 'scholarshipId',

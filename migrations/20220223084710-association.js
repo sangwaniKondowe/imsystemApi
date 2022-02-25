@@ -5,7 +5,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     //addcolumn("table name","foreign key")
     return await queryInterface
-      .addColumn("applicants", "scholarshipId", {
+      .addColumn("applications", "scholarshipId", {
         type: DataTypes.INTEGER,
         references: {
           model: "scholarships", // name of Target model
@@ -14,7 +14,7 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "NO ACTION",
       }).then(async () => {
-        return await queryInterface.addColumn("applicants", "awardId", {
+        return await queryInterface.addColumn("applications", "awardId", {
           type: DataTypes.INTEGER,
           references: {
             model: "awards", // name of Target model
@@ -34,10 +34,10 @@ module.exports = {
           onDelete: "NO ACTION",
         });
       }).then(async () => {
-        return await queryInterface.addColumn("beneficiaries", "awardId", {
+        return await queryInterface.addColumn("beneficiaries", "applicationId", {
           type: DataTypes.INTEGER,
           references: {
-            model: "awards", // name of Target model
+            model: "applications", // name of Target model
             key: "id", // key in Target model that we're referencing
           },
           onUpdate: "CASCADE",
@@ -46,16 +46,16 @@ module.exports = {
       })
     },
     down: async (queryInterface, Sequelize) => {
-      return await queryInterface
-        .removeColumn("applicants", "scholarshipId")
-        .then(async () => {
-          return await queryInterface.removeColumn("applicants", "awardId");
-        })
-        .then(async () => {
-          return await queryInterface.removeColumn("beneficiaries", "scholarshipId");
-        })
-        .then(async () => {
-          return await queryInterface.removeColumn("beneficiaries", "awardId");
-        })
+       return await queryInterface
+         .removeColumn("applications", "scholarshipId")
+         .then(async () => {
+           return await queryInterface.removeColumn("applications", "awardId");
+         })
+         .then(async () => {
+           return await queryInterface.removeColumn("beneficiaries", "scholarshipId");
+         })
+         .then(async () => {
+           return await queryInterface.removeColumn("beneficiaries", "applicationId");
+         })
     },
   };

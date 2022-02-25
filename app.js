@@ -12,7 +12,9 @@ app.use(logger())
 
 // router.post('/send_application', require('./Controllers/appController').sending_application)
 
-app.use('/applicant',require('./Routers/Router'));
+app.use('/application',require('./Routes/Routes'));
+app.use('/scholarship', require('./Routes/scholarRoute'))
+app.use('/beneficiary', require('./Routes/BeneficiaryRoute'))
 // const { sequelize } = require("./models");
 
 // const AllController = require('./Controllers/Controller');
