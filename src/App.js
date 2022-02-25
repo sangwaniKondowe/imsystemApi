@@ -20,8 +20,10 @@ import { blue, blueGrey,grey,white } from '@material-ui/core/colors';
 import Applicants from './Components/Applicants'
 import Beneficiaries from './Components/Beneficiaries'
 import Scholarships from './Components/Scholarships'
-import {BrowserRouter,Route,Switch,NavLink} from 'react-router-dom'
+import {BrowserRouter,Route,Switch} from 'react-router-dom'
 import Dashboard from './Components/Dashboard';
+
+import {NavLink} from 'react-router-dom'
 
 const drawerWidth = 240;
 
@@ -98,7 +100,7 @@ const useStyles = makeStyles((theme) => ({
  
   wrapper:{
     
-      padding:theme.spacing(8,12)
+      padding:theme.spacing(8,6,4,12)
     
   },
   navlinks:{
@@ -215,17 +217,16 @@ function App() {
 
 
 
-        <List>
+      {<List>
 
 {itemList.map((item, index) => {
   const {text,icon} = item;
 
   return (
     <ListItem 
-    
+    component={NavLink}
      to = {item.link} 
-     
-     key={index}>
+     button key={index}>
       {icon && <ListItemIcon>{icon}</ListItemIcon>}
       <ListItemText primary = {text} />
     </ListItem>
@@ -233,21 +234,21 @@ function App() {
 
 })} 
 
-</List>
+</List> }
       
       </Drawer>
       <main className = {classes.content}>
 
      <Box className = {classes.wrapper}>
-   <BrowserRouter>
+   
  <Switch>
  <Route exact path = "/" render={() => <Dashboard/>}/>
  <Route exact path ="/Scholarships" render={() => < Scholarships/>}/>
- <Route exact path ="/applicants" render={() => <Applicants/>}/>
- <Route exact path ="/beneficiaries" render={() => <Beneficiaries/>}/>
+ <Route exact path ="/Applicants" render={() => <Applicants/>}/>
+ <Route exact path ="/Beneficiaries" render={() => <Beneficiaries/>}/>
  
  </Switch>
- </BrowserRouter>
+ 
 
  </Box>
  </main>
