@@ -1,5 +1,6 @@
 'use strict'
 
+const Application = require('../models/application');
 const Scholarship = require('../models/scholarship');
 
 //const router = require('express').Router();
@@ -42,7 +43,12 @@ exports.scholarDetails = async (req, res) => {
 
 
 exports.allScholarships = async (req, res) => {
-    const Scholarships = await Scholarship.findAll();
+    const Scholarships = await Scholarship.findAll({
+        include:{
+            model:Application,
+            attributes:["uuid"]
+        }
+    });
     if (Scholarships) {
       res.status(200).json({ Scholarships });
     } else {

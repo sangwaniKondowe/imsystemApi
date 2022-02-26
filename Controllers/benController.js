@@ -6,13 +6,13 @@ const Scholarship = require('../models/scholarship');
 
 
 
-
-
-
-
 exports.showBeneficiary = async (req, res) => {
-    const Beneficiaries = await Beneficiary.findAll();
+    const Beneficiaries = await Beneficiary.findAll({
+    
+    });
+
     if (Beneficiaries) {
+
       res.status(200).json({ Beneficiaries });
     } else {
       res.status(404).send("no messages");
@@ -28,7 +28,7 @@ exports.showBeneficiary = async (req, res) => {
 exports.getBeneficiary = async(req, res) => {
 
     
-        const uuid = req.params.uuid;
+        const uuid = req.params.beneficiaryUUID;
         const attributes1 = [
             "uuid",
         ]

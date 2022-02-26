@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 
-router.get('/getBeneficiary/:uuid', require('../Controllers/benController').getBeneficiary)
+router.post('/getBeneficiary/:beneficiaryUUID', require('../Controllers/benController').getBeneficiary)
 router.get('/showBeneficiary', require('../Controllers/benController').showBeneficiary)
 
 

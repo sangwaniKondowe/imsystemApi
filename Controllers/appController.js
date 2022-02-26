@@ -1,11 +1,13 @@
 'use strict'
 
+const errorHandler = require('errorhandler');
 const { response } = require('express');
 const { status } = require('express/lib/response');
 const { user } = require('pg/lib/defaults');
 //const { where } = require('sequelize/types');
 const Application = require('../models/application');
 const Beneficiary = require('../models/beneficiary');
+const Scholarship = require('../models/scholarship');
 //const Applications = require('../models/applicant');
 
 
@@ -39,71 +41,106 @@ exports.getall = async (req, res) => {
   }
 };
 
- //checking existence and saving application with pending status
+//checking existence and saving application with pending status
 
 exports.sending_application = async (req, res) => {
 
-  const { fullName, YrOfStudy, program, regNum, description, nameOfScholar, accountNum, bankName, religion, status } = req.body;
+  try{
+    //const { fullName, YrOfStudy, program, regNum, description, nameOfScholar, accountNum, bankName, religion, status } = req.body;
 
- 
+    const uuid = req.params.scholarshipUUID;
 
-  const applicantExist = await Application.findOne({
-    where: {
-      regNum,
-      accountNum,
-    },
-  });
-  if (applicantExist) {
-    res.status(409).json({
-      message: "applicant already in the database",
-      Application: applicantExist,
+    const scholarshipExist = await Scholarship.findOne({
+      where: {
+        uuid      
+      },
     });
-  } else {
+    if (scholarshipExist) {
+      const reqBody = { ...req.body, scholarshipId: scholarshipExist.id, status: "PENDING"}
+      Application.create(reqBody)
+      res.send({succes:true, message:"Application success"})
 
-    const reqBody = {...req.body, status:"PENDING"}
+    } else {
+     res.send({
+       sucess:false
+     })
+  };
 
-    await require("../models/application")
-      .create(reqBody).then((response) => {
-        res.status(201).json({
-          message: "application added successfully",
-          details: response,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-        return res.status(500).json({
-          message: error.message,
-        });
-      });
+  } catch (err) {
+
+    console.log(err)
+   // next(new errorHandler(500, err.message));
   }
-};
+}
+ 
 
 // sending application uuid to beneficiaries table
 
-exports.markComplete = async (req, res) => {
-  const uuid = req.params.uuid;
-   const application2 = await Application.findOne({
-     where: {
-       uuid,
-      }})
-    if ( application2 ) {
-      const appBody = {...application2, status:"COMPLETED"}
-      Application.update({status:"COMPLETED"}, {
-        where:{uuid}
+// exports.markComplete = async (req, res) => {
+//   const uuid = req.params.uuid;
+//   const application2 = await Application.findOne({
+//     where: {
+//       uuid,
+//     }
+//   })
+//   if (application2) {
+//     const appBody = { ...application2, status: "COMPLETED" }
+//     Application.update({ status: "COMPLETED" }, {
+//       where: { uuid }
+//     }
+//     ).then(response => {
+//       if (response == 1) {
+//         Beneficiary.create({
+//           applicationId: application2.id,
+    
+//         })
+//         res.send({
+//           success: true,
+//           message: "Application accepted",
+//           appBody
+//         })
+//       }
+//     })
+
+//   }
+// }
+
+
+exports.markComplete = async (req ,res) =>{
+
+  try {
+  const uuid = req.params.applicationUUID;
+
+  const applicationExist = await Application.findOne({
+    where: {
+      uuid,
       }
-  ).then(response=>{
-    if(response==1){
-      Beneficiary.create({
-        applicationId:application2.id
-      })
-      res.send({
-        success:true
-,
-message:"Application accepted"      })
-    }
-  })
-      
-  }
+    });
+    if (applicationExist){
+      Application.update({ status: "COMPLETED" }, {
+              where: { uuid }
+            })
+            .then(response => {
+              if(response == 1) {
+                Beneficiary.create({
+                  applicationId: applicationExist.id,
+                  scholarshipId: applicationExist.scholarshipId
+                })
+                res.send({
+                  success: true,
+                  message: "Application accepted",
+                })
+              }else{
+                res.send({
+                  success: false
+                })
+              }
+              
+            })
+
+          }} catch (err){
+               console.log(err)
+          }
 }
 
 
@@ -111,8 +148,8 @@ message:"Application accepted"      })
 // exports.changestatus = async (req, res) =>{
 //   const uuid = req.params.uuid;
 //  const application = await Application.findOne({where: {uuid}})
- 
- 
+
+
 //  if ( application ){
 
 //   const pending = Object.assign(application,{status:"pending"})
@@ -125,7 +162,7 @@ message:"Application accepted"      })
 
 // exports.markComplete = async (req, res) => {
 //    const uuid = req.params.uuid;
-   
+
 //    const application1 = await Application.findOne({where: {uuid}})
 
 //    if ( application1 ) {
@@ -137,21 +174,21 @@ message:"Application accepted"      })
 
 // Get number of all complete aplications
 
-exports.statusComplete = async (req, res) => {
-  const all = await Application.count({
-    where: {
-      status: "COMPLETED",
-    },
-  
-  })
-  if (all) {
+// exports.statusComplete = async (req, res) => {
+//   const all = await Application.count({
+//     where: {
+//       status: "COMPLETED",
+//     },
 
-  res.send(`approved applications: ${all}`)
-  }else {
-    res.status(404).send("no approved applications");
-  }
-}
+//   })
+//   if (all) {
 
+//     res.send(`approved applications: ${all}`)
+//   } else {
+//     res.status(404).send("no approved applications");
+//   }
+// }
+// }
 // Get number of all pending applications
 
 exports.statusPending = async (req, res) => {
@@ -159,71 +196,12 @@ exports.statusPending = async (req, res) => {
     where: {
       status: "PENDING",
     },
-  
+
   })
   if (all) {
 
-  res.send(`pending applications: ${all}`)
-  }else {
+    res.send(`pending applications: ${all}`)
+  } else {
     res.status(404).send("no pending applications");
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Get number of all applications
-
-// exports.allApplications = async (req, res) => {
-//   const all = await Application.count( () => {
-
-
-//     if (all >= 0) {
-
-//       res.send(`all applications: ${all}`)
-//       }else {
-//         res.status(404).send("no applications at the moment.");
-//       }
-//   })
-
-// }
-
-// user.sync({ alter: true}).then(() => {
-//   return user.findByPk();
-// }).then((data) => {
-//   console.log(data.toJSON());
-// }).catch((err) => {
-//   console.log(err)
-// })
