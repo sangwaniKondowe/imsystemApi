@@ -41,7 +41,7 @@ exports.getall = async (req, res) => {
   }
 };
 
-//checking existence and saving application with pending status
+//checking existence of scholarship and saving application with that scholarship id
 
 exports.sending_application = async (req, res) => {
 
