@@ -144,20 +144,20 @@ function App() {
     icon: <DashboardIcon/>,
     link: "/"
   },
-  {
-    text: "Scholarships",
-    icon: <SchoolIcon/>,
-    link: "/Scholarships"
+  // {
+  //   text: "Scholarships",
+  //   icon: <SchoolIcon/>,
+  //   link: "/Scholarships"
 
-  },
+  // },
   {
-    text: "Applicants",
-    icon: <PeopleIcon/>,
+    text: "Applicantions",
+    icon: <PersonIcon />,
     link: "/applicants"
   },
   {
     text:"Beneficiaries",
-    icon:<PersonIcon />,
+    icon:<PeopleIcon/>,
     link: "/beneficiaries"
   }
 ]
@@ -190,7 +190,7 @@ function App() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            UNIMA SCHOLARSHIP MANAGEMENT SYSTEM
+          GLEN FALLY BENEFICIARY MANAGEMENT SYSTEM
           </Typography>
         </Toolbar>
       </AppBar>
@@ -243,7 +243,6 @@ function App() {
    
  <Switch>
  <Route exact path = "/" render={() => <Dashboard/>}/>
- <Route exact path ="/Scholarships" render={() => < Scholarships/>}/>
  <Route exact path ="/Applicants" render={() => <Applicants/>}/>
  <Route exact path ="/Beneficiaries" render={() => <Beneficiaries/>}/>
  

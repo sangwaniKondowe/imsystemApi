@@ -47,6 +47,14 @@ export const useStyles = makeStyles((theme) => ({
             fontSize:"1.8rem",
         }
 
+    },
+
+    //graph styles
+    graphContainer:{
+        // width:"100%",
+        // height:"300px",
+        height:"auto",
+    margin:theme.spacing(3,0)
     }
 
 }));

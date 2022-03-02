@@ -2,6 +2,9 @@ import React from 'react'
 import {Box, Grid, Typography, CardContent,Card} from '@material-ui/core'
 import {useStyles} from './BodyStyles'
 import {PageHeader} from './Common/CommonComponents'
+import BarGraph from './Graphs/BarGraph';
+import ChartGraph from './Graphs/ChartGraph';
+import CommonGraphComponents from './Common/CommonGraphComponents';
 
 function Dashboard () {
 
@@ -9,25 +12,25 @@ function Dashboard () {
 
     const displayData = [
       {
-        cardLabel: "Applicants",
-        cardTitle: "   NCHE",
-        applicantsNumber: " 4567 "
+        cardLabel: "",
+        cardTitle: " Applied",
+        applicantsNumber: " 100 "
 
 
 
     },
     {
-      cardLabel: "Applicants",
-      cardTitle: " Gren Fare",
-      applicantsNumber: " 45 "
+      cardLabel: "",
+      cardTitle: " Selected",
+      applicantsNumber: " 70 "
 
 
 
   },
   {
-    cardLabel: "Applicants",
-    cardTitle: "Muslim Association",
-    applicantsNumber: " 457 "
+    cardLabel: "",
+    cardTitle: "Not Selected",
+    applicantsNumber: " 30 "
 
 
 
@@ -36,6 +39,7 @@ function Dashboard () {
     
 
     return (
+      <div>
        <Box>
         
       <PageHeader label="Dashboard" pageTitle="Scholarship Overview"/>
@@ -44,7 +48,7 @@ function Dashboard () {
       
         {displayData.map((item , index) => (
              <Grid item xs={6} sm={4}>
-             <Card>
+             <Card style={{ height: '100%' }} >
 
              <CardContent className={classes.cardCentent} key={index}>
           <Typography variant="body2" className={classes.cardLabel}>
@@ -74,9 +78,21 @@ function Dashboard () {
       
 
       </Grid>
-      
+
+     
+      <CommonGraphComponents/>
+     
 
        </Box>
+
+       
+      
+      
+
+
+
+
+</div>
     );
 }
 
