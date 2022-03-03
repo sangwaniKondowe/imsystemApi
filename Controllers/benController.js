@@ -2,7 +2,6 @@
 
 const Application = require('../models/application');
 const Beneficiary = require('../models/beneficiary');
-const Scholarship = require('../models/scholarship');
 
 
 

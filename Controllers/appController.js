@@ -1,14 +1,9 @@
 'use strict'
 
-const errorHandler = require('errorhandler');
-const { response } = require('express');
-const { status } = require('express/lib/response');
-const { user } = require('pg/lib/defaults');
-//const { where } = require('sequelize/types');
 const Application = require('../models/application');
 const Beneficiary = require('../models/beneficiary');
-const Scholarship = require('../models/scholarship');
-//const Applications = require('../models/applicant');
+const User = require('../models/user')
+
 
 
 // Getting all applications
@@ -48,15 +43,16 @@ exports.sending_application = async (req, res) => {
   try{
     //const { fullName, YrOfStudy, program, regNum, description, nameOfScholar, accountNum, bankName, religion, status } = req.body;
 
-    const uuid = req.params.scholarshipUUID;
+    //const uuid = req.params.studentUUID;
 
-    const scholarshipExist = await Scholarship.findOne({
+    const studentExist = await User.findOne({
       where: {
-        uuid      
+        uuid,
+    
       },
     });
-    if (scholarshipExist) {
-      const reqBody = { ...req.body, scholarshipId: scholarshipExist.id, status: "PENDING"}
+    if (studentExist) {
+      const reqBody = { ...req.body, userId:studentExist.id ,status: "PENDING"}
       Application.create(reqBody)
       res.send({succes:true, message:"Application success"})
 
@@ -69,7 +65,6 @@ exports.sending_application = async (req, res) => {
   } catch (err) {
 
     console.log(err)
-   // next(new errorHandler(500, err.message));
   }
 }
  

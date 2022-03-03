@@ -14,18 +14,41 @@ module.exports = {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
-      username: {
+      firstname: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      lastname: {
         type: DataTypes.STRING,
         allowNull: false
       },
       email:{
+        type: DataTypes.STRING,
+        allowNull:false
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      regNum:{
         type:DataTypes.STRING,
         allowNull:false
       },
-      role:{
-      type: DataTypes.STRING,
-      allowNull:false,
-      unique:true
+      yrOfStudy:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      role: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      Gender:{
+        type:DataTypes.STRING,
+        allowNull:false
+      },
+      GPA:{
+        type: DataTypes.DOUBLE,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
