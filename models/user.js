@@ -30,11 +30,11 @@ const User = dbConnection.define('users', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  regNum:{
+  regnum:{
     type:DataTypes.STRING,
     allowNull:false
   },
-  yrOfStudy:{
+  yrofstudy:{
     type: DataTypes.INTEGER,
     allowNull: false,
   },
@@ -42,11 +42,11 @@ const User = dbConnection.define('users', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  Gender:{
+  gender:{
     type:DataTypes.STRING,
     allowNull:false
   },
-  GPA:{
+  gpa:{
     type: DataTypes.DOUBLE,
     allowNull: false
   },

@@ -29,27 +29,27 @@ const Application = dbConnection.define('applications', {
     type:DataTypes.STRING,
     allowNull:false
   },
-  regNum:{
+  regnum:{
     type:DataTypes.STRING,
     allowNull:false
   },
-  yrOfStudy:{
+  yrofstudy:{
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  Gender:{
+  gender:{
     type:DataTypes.STRING,
     allowNull:false
   },
-  GPA:{
+  gpa:{
     type: DataTypes.DOUBLE,
     allowNull: false
   },
-  bankName:{
+  bankname:{
     type: DataTypes.STRING,
     allowNull: true
   },
-  accountNum:{
+  accountnum:{
     type: DataTypes.STRING,
     allowNull: true
   },

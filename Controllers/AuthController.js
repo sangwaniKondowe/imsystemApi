@@ -1,9 +1,10 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
+//const Application = require("../models/application");
 
 
-require("dotenv").config;
+require("dotenv").config();
 
 class AuthController {
     // let's generate a token
@@ -16,7 +17,13 @@ class AuthController {
 
 
     // login
-    static login = async (req, res, next) => {
+    static login = async (req, res) => {
+
+    //    await  User.findAll().then(re=>{
+    //         res.send(re)
+    //     });
+      
+
         try {
             const { email, password } = req.body;
 
@@ -25,9 +32,12 @@ class AuthController {
                     email,
                 },
             });
+           
 
             if(student === null) {
-                res.sendStatus(401);
+
+                
+            res.sendStatus(401, "Wrong credentials");
             }
 
             const validPassword = bcrypt.compareSync(password, student.password);
@@ -42,7 +52,7 @@ class AuthController {
                 res.sendStatus(401, "Wrong credintials");
             }
         } catch (err) {
-            res.sendStatus(500, err.message)
+          console.log(err)
         }
     }
 
