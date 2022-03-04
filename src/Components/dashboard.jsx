@@ -2,8 +2,7 @@ import React from 'react'
 import {Box, Grid, Typography, CardContent,Card} from '@material-ui/core'
 import {useStyles} from './BodyStyles'
 import {PageHeader} from './Common/CommonComponents'
-import BarGraph from './Graphs/BarGraph';
-import ChartGraph from './Graphs/ChartGraph';
+
 import CommonGraphComponents from './Common/CommonGraphComponents';
 
 function Dashboard () {

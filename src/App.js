@@ -241,6 +241,7 @@ function App() {
 
      <Box className = {classes.wrapper}>
    
+   
  <Switch>
  <Route exact path = "/" render={() => <Dashboard/>}/>
  <Route exact path ="/Applicants" render={() => <Applicants/>}/>
