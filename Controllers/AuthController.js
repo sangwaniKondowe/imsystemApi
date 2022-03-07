@@ -37,7 +37,9 @@ class AuthController {
             if(student === null) {
 
                 
-            res.sendStatus(401, "Wrong credentials");
+            res.status(401).json({
+                message: "Incorrect email or password."
+            });
             }
 
             const validPassword = bcrypt.compareSync(password, student.password);
@@ -49,7 +51,7 @@ class AuthController {
                     data: student,
                 });
             } else {
-                res.sendStatus(401, "Wrong credintials");
+                res.sendStatus(401);
             }
         } catch (err) {
           console.log(err)

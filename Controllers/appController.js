@@ -3,25 +3,9 @@
 const Application = require('../models/application');
 const Beneficiary = require('../models/beneficiary');
 const User = require('../models/user')
+const { Sequelize } = require("sequelize");
 
 
-
-// Getting all applications
-
-exports.getsome = async (req, res) => {
-  const Muslims = await Application.findAll({
-    where: {
-      religion: 'Muslim',
-      nameOfScholar: 'Muslim NGO'
-    },
-  });
-  if (Muslims) {
-    res.status(200).json({ Muslims });
-  }
-  else {
-    res.status(404).send('no messages')
-  }
-}
 
 
 // Getting all applications 
@@ -43,7 +27,7 @@ exports.sending_application = async (req, res) => {
   try{
     //const { fullName, YrOfStudy, program, regNum, description, nameOfScholar, accountNum, bankName, religion, status } = req.body;
 
-    //const uuid = req.params.studentUUID;
+    const uuid = req.params.studentUUID;
 
     const studentExist = await User.findOne({
       where: {
@@ -103,40 +87,47 @@ exports.sending_application = async (req, res) => {
 
 exports.markComplete = async (req ,res) =>{
 
-  try {
-  const uuid = req.params.applicationUUID;
+  const gender = await Application.findAll({ order: Sequelize.literal('random()'), limit: 4})
+    .then((application) => {
+      res.status(200).json({ application })
+    })
+  };
 
-  const applicationExist = await Application.findOne({
-    where: {
-      uuid,
-      }
-    });
-    if (applicationExist){
-      Application.update({ status: "COMPLETED" }, {
-              where: { uuid }
-            })
-            .then(response => {
-              if(response == 1) {
-                Beneficiary.create({
-                  applicationId: applicationExist.id,
-                  scholarshipId: applicationExist.scholarshipId
-                })
-                res.send({
-                  success: true,
-                  message: "Application accepted",
-                })
-              }else{
-                res.send({
-                  success: false
-                })
-              }
+
+  // try {
+  // const uuid = req.params.applicationUUID;
+
+  // const applicationExist = await Application.findOne({
+  //   where: {
+  //     uuid,
+  //     }
+  //   });
+  //   if (applicationExist){
+  //     Application.update({ status: "COMPLETED" }, {
+  //             where: { uuid }
+  //           })
+  //           .then(response => {
+  //             if(response == 1) {
+  //               Beneficiary.create({
+  //                 applicationId: applicationExist.id,
+  //                 scholarshipId: applicationExist.scholarshipId
+  //               })
+  //               res.send({
+  //                 success: true,
+  //                 message: "Application accepted",
+  //               })
+  //             }else{
+  //               res.send({
+  //                 success: false
+  //               })
+  //             }
               
-            })
+  //           })
 
-          }} catch (err){
-               console.log(err)
-          }
-}
+  //         }} catch (err){
+  //              console.log(err)
+  //         }
+//}
 
 
 

@@ -1,5 +1,5 @@
 const express = require('express');
-const { sequelize } = require('./models')
+//const { sequelize } = require('./models')
 const logger = require("morgan");
 require('dotenv').config();
 
