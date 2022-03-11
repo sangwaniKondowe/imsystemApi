@@ -1,7 +1,6 @@
 'use strict'
 
 const Application = require('../models/application');
-const Beneficiary = require('../models/beneficiary');
 const User = require('../models/user')
 const { Sequelize } = require("sequelize");
 
@@ -85,14 +84,28 @@ exports.sending_application = async (req, res) => {
 // }
 
 
-exports.markComplete = async (req ,res) =>{
+// exports.markComplete = async (req ,res) =>{
 
-  const gender = await Application.findAll({ order: Sequelize.literal('random()'), limit: 4})
-    .then((application) => {
-      res.status(200).json({ application })
-    })
-  };
+//      await Application.findAll({ order: Sequelize.literal('random()'), limit: 4})
+//     .then((application) => {
+//       res.status(200).json({ application })
+//     })
+//   };
 
+exports.markComplete = async (req, res) => { 
+
+  const limit = req.query.limit;
+  
+
+    await Application.findAll({ order: Sequelize.literal('random()'), limit: limit, include: {
+      model: User,
+      where: {
+        role: "student",
+   }
+  }}).then((response) => {
+    res.status(200).json({response  })
+  }) 
+}
 
   // try {
   // const uuid = req.params.applicationUUID;

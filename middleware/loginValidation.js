@@ -27,4 +27,17 @@ const loginValidation = [
   },
 ];
 
-module.exports = loginValidation;
+
+const authPage = (role) => {
+  return ( req, res, next ) => {
+    if (role.includes(req.role)) {
+      next()
+    } else {
+      return res.status(401).json("You don't have permission!")
+    }
+  }
+};
+
+
+
+module.exports = { loginValidation, authPage};

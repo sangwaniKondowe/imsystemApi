@@ -79,7 +79,7 @@ class AuthController {
         return (req, res, next) => {
             if (!role.includes(req.role)) {
                 next(
-                    res.sendStatus(403, "You do not have permission to perfom this action")
+                    res.status(403).json("You do not have permission to perfom this action")
                 )
             };
             next();
