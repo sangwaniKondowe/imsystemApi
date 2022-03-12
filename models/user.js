@@ -32,15 +32,11 @@ const User = dbConnection.define('users', {
   },
   regnum:{
     type:DataTypes.STRING,
-    allowNull:false
+    allowNull: true,
   },
   yrofstudy:{
     type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  role: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   gender:{
     type:DataTypes.STRING,
@@ -48,7 +44,7 @@ const User = dbConnection.define('users', {
   },
   gpa:{
     type: DataTypes.DOUBLE,
-    allowNull: false
+    allowNull: true,
   },
   
 }, {

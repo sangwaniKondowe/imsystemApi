@@ -23,7 +23,27 @@ module.exports = {
           onUpdate: "CASCADE",
           onDelete: "NO ACTION",
         });
-      })
+        }).then(async () => {
+            return await queryInterface.addColumn("user_roles", "userId", {
+              type: DataTypes.INTEGER,
+              references: {
+                model: "users", // name of Target model
+                key: "id", // key in Target model that we're referencing
+              },
+              onUpdate: "CASCADE",
+              onDelete: "NO ACTION",
+            });
+          }).then(async () => {
+            return await queryInterface.addColumn("user_roles", "roleId", {
+              type: DataTypes.INTEGER,
+              references: {
+                model: "roles", // name of Target model
+                key: "id", // key in Target model that we're referencing
+              },
+              onUpdate: "CASCADE",
+              onDelete: "NO ACTION",
+            });
+          })
      },
     down: async (queryInterface, Sequelize) => {
        return await queryInterface
@@ -31,5 +51,11 @@ module.exports = {
          .then(async () => {
            return await queryInterface.removeColumn("beneficiaries", "applicationId");
          })
+         .then(async () => {
+            return await queryInterface.removeColumn("user_roles", "userId");
+          })
+          .then(async () => {
+            return await queryInterface.removeColumn("user_roles", "roleId");
+          });
     },
-  };
+};

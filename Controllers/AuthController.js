@@ -48,7 +48,9 @@ class AuthController {
                 const token = this.generateToken(student.role);
                 res.status(200).json({
                     token,
-                    data: student,
+                    response: {
+                        message: "logged in successfully!"
+                    },
                 });
             } else {
                 res.sendStatus(401);

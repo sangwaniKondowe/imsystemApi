@@ -3,6 +3,7 @@
 const Application = require('../models/application');
 const User = require('../models/user')
 const { Sequelize } = require("sequelize");
+const User_role = require('../models/user_role');
 
 
 
@@ -24,16 +25,18 @@ exports.getall = async (req, res) => {
 exports.sending_application = async (req, res) => {
 
   try{
-    //const { fullName, YrOfStudy, program, regNum, description, nameOfScholar, accountNum, bankName, religion, status } = req.body;
+    
 
-    const uuid = req.params.studentUUID;
+   const uuid = req.params.studentUUID;
 
-    const studentExist = await User.findOne({
+    const studentExist = await User_role.findOne({
       where: {
         uuid,
     
       },
     });
+    
+
     if (studentExist) {
       const reqBody = { ...req.body, userId:studentExist.id ,status: "PENDING"}
       Application.create(reqBody)

@@ -16,7 +16,8 @@ app.use(logger())
 
 app.use('/login', AuthRoutes)
 app.use('/application',require('./Routes/Routes'));
-app.use('/beneficiary', require('./Routes/BeneficiaryRoute'))
+app.use('/beneficiary', require('./Routes/BeneficiaryRoute'));
+app.use('/userRole', require('./Routes/UserRoute'));
 
 const PORT = process.env.PORT || 5000;
 
