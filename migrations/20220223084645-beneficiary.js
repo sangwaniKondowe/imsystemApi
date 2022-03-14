@@ -9,10 +9,12 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
+        unique: true,
       },
       uuid: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
+        unique: true,
       },
       createdAt: {
         allowNull: false,

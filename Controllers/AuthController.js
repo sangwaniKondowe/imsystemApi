@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
+const Role = require("../models/role");
+const User_role = require("../models/user_role");
 //const Application = require("../models/application");
 
 
@@ -9,8 +11,8 @@ require("dotenv").config();
 class AuthController {
     // let's generate a token
 
-    static generateToken = (role) => {
-        return jwt.sign({ data: role}, process.env.TOKEN_SECRET, {
+    static generateToken = (data) => {
+        return jwt.sign({data}, process.env.TOKEN_SECRET, {
              expiresIn: 60 * 60,     
         });
     };
@@ -31,6 +33,7 @@ class AuthController {
                 where: {
                     email,
                 },
+                include: User_role,
             });
            
 
@@ -45,7 +48,24 @@ class AuthController {
             const validPassword = bcrypt.compareSync(password, student.password);
 
             if (validPassword) {
-                const token = this.generateToken(student.role);
+                const userRoles = student.user_roles.map(r=>{return r.dataValues.roleId})
+
+            
+                let ur = []
+                for(let i = 0; i < userRoles.length; i++){
+                    const userRole = await Role.findOne({
+                        where:{
+                            id:userRoles[i]
+                        }
+                    })
+                    ur.push(userRole.dataValues.role_name)
+                }
+
+                const data = {
+                    userId : student.id,
+                    roles : ur
+                }
+                const token = this.generateToken(data);
                 res.status(200).json({
                     token,
                     response: {
@@ -71,15 +91,20 @@ class AuthController {
         if (token === null) 
             return res.status(401).json({ message: "Unauthenticated" });
         jwt.verify(token, process.env.TOKEN_SECRET, (err, authData) => {
+
+            console.log(authData)
             if (err) res.sendStatus(403, err.message);
-            req.role = authData.data;
+            if(authData.data.roles.length>=1){
+                req.roles = authData.data.roles[0]
+                req.userId = authData.data.userId
+            }
             next();
         });
     };
-
+        
     static preAuthorize = (...role) => {
         return (req, res, next) => {
-            if (!role.includes(req.role)) {
+            if (!role.includes(req.roles)) {
                 next(
                     res.status(403).json("You do not have permission to perfom this action")
                 )

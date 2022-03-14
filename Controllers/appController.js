@@ -4,7 +4,7 @@ const Application = require('../models/application');
 const User = require('../models/user')
 const { Sequelize } = require("sequelize");
 const User_role = require('../models/user_role');
-
+const crypto = require('crypto').webcrypto
 
 
 
@@ -27,11 +27,9 @@ exports.sending_application = async (req, res) => {
   try{
     
 
-   const uuid = req.params.studentUUID;
-
     const studentExist = await User_role.findOne({
       where: {
-        uuid,
+        id:req.userId,
     
       },
     });
@@ -39,6 +37,9 @@ exports.sending_application = async (req, res) => {
 
     if (studentExist) {
       const reqBody = { ...req.body, userId:studentExist.id ,status: "PENDING"}
+
+        
+      
       Application.create(reqBody)
       res.send({succes:true, message:"Application success"})
 
@@ -95,21 +96,62 @@ exports.sending_application = async (req, res) => {
 //     })
 //   };
 
-exports.markComplete = async (req, res) => { 
 
-  const limit = req.query.limit;
+const generateRandom = (min, max, maxRange)=>{
+  var byteArray = new Uint8Array(1)
+  crypto.getRandomValues(byteArray)
+  var range = max-min+1
+  if(byteArray[0]>=Math.floor(maxRange/range)*range){
+      return generateRandom(min, max, maxRange)
+  }
+
+  return min + (byteArray[0] % range);
+
+}
+exports.markComplete = async (req, res) => { 
+  const {males, females }= req.query
+
   
 
-    await Application.findAll({ order: Sequelize.literal('random()'), limit: limit, include: {
-      model: User,
-      where: {
-        role: "student",
-   }
-  }}).then((response) => {
-    res.status(200).json({response  })
-  }) 
-}
+    await Application.findAll({
+        include: User,
+    }).then((response) => {
+      
 
+      let famaleIndes = []
+     const femaleArr = response.filter(f=>f.user.gender==="Female")
+     const malesArr = response.filter(f=>f.user.gender==="Male")
+
+
+     let malesActulRequired = males > malesArr.length?malesArr.length:males
+     let mToReturn = []
+     let fToReturn = []
+     if(males >= malesArr.length){
+        mToReturn=malesArr
+     }else{
+       for(let i = 0; i < males; i++){
+         let first = malesArr[generateRandom(0, malesArr.length-1, 256)]
+           mToReturn.push(first)
+         }
+     }
+
+     if(females >= femaleArr.length){
+      fToReturn=femaleArr
+   }else{
+     for(let i = 0; i < females; i++){
+       let first = femaleArr[generateRandom(0, femaleArr.length-1, 256)]
+         fToReturn.push(first)
+       }
+   }
+   
+
+
+
+   let selected= mToReturn.concat(fToReturn)
+
+  
+      res.send({selected})
+    })}
   // try {
   // const uuid = req.params.applicationUUID;
 

@@ -3,7 +3,7 @@
 const { DataTypes } = require("sequelize");
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-  //  addcolumn("table name","foreign key")
+   //addcolumn("table name","foreign key")
     return await queryInterface
       .addColumn("applications", "userId", {
         type: DataTypes.INTEGER,
@@ -14,16 +14,17 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "NO ACTION",
       }).then(async () => {
-        return await queryInterface.addColumn("beneficiaries", "applicationId", {
+        return await queryInterface.addColumn("beneficiaries", "userId", {
           type: DataTypes.INTEGER,
           references: {
-            model: "applications", // name of Target model
+            model: "users", // name of Target model
             key: "id", // key in Target model that we're referencing
           },
           onUpdate: "CASCADE",
           onDelete: "NO ACTION",
         });
-        }).then(async () => {
+        })
+        .then(async () => {
             return await queryInterface.addColumn("user_roles", "userId", {
               type: DataTypes.INTEGER,
               references: {
@@ -43,13 +44,13 @@ module.exports = {
               onUpdate: "CASCADE",
               onDelete: "NO ACTION",
             });
-          })
+         })
      },
     down: async (queryInterface, Sequelize) => {
        return await queryInterface
          .removeColumn("applications", "userId")
          .then(async () => {
-           return await queryInterface.removeColumn("beneficiaries", "applicationId");
+           return await queryInterface.removeColumn("beneficiaries", "userId");
          })
          .then(async () => {
             return await queryInterface.removeColumn("user_roles", "userId");

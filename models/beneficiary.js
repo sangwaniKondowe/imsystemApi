@@ -10,10 +10,12 @@ const Beneficiary = dbConnection.define('beneficiaries', {
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
+    unique: true,
   },
   uuid: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
+    unique: true,
   },
   }, {
 

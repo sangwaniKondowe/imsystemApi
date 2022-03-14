@@ -13,6 +13,7 @@ module.exports = {
       uuid: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
+      
       }
     });
   },

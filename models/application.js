@@ -14,10 +14,12 @@ const Application = dbConnection.define('applications', {
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
+    unique: true,
   },
   uuid: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
+    unique: true,
   },
   status:{
     type: DataTypes.STRING,
@@ -31,16 +33,17 @@ const Application = dbConnection.define('applications', {
 User.hasOne(Application, {
     foreignKey: 'userId',
     onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
+    onUpdate: 'CASCADE',
 })
 Application.belongsTo(User)
 
-Application.hasOne(Beneficiary, {
-  foreignKey: 'applicationId',
+
+User.hasOne(Beneficiary, {
+  foreignKey: 'userId',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE'
 })
-Beneficiary.belongsTo(Application)
+Beneficiary.belongsTo(User)
 
 User.hasMany(User_role, {
   foreignKey: 'userId',
