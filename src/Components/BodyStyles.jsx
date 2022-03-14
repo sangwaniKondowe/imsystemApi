@@ -76,6 +76,12 @@ export const useStyles = makeStyles((theme) => ({
         borderRadius:15,
         margin:"10px 10px",
         
-    }
+    },
+// selection form 
 
+selectionForm: {
+  alignItems: "center",
+  justify: "center",
+  margin: "10px 10px"
+}
 }));

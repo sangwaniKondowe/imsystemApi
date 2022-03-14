@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {PageHeader} from './Common/CommonComponents'
-import Button from '@material-ui/core/Button'
+
+import { Button,TextField, FormControlLabel,FormLabel,Grid} from '@material-ui/core'
 import {Box} from '@material-ui/core'
 import {useStyles} from './BodyStyles'
+
 
 import {Table,
     TableBody,
@@ -20,16 +22,72 @@ const student = [
     {firstName: "Joseph", lastName:"Mkonda",Gender:"Male", email:"Bsc-104-16@unima.ac.mw" ,YearOfStudy:1, GPA: 3.20 },
     {firstName: "Joseph", lastName:"Mkonda", Gender:"Male",email:"Bsc-104-16@unima.ac.mw" ,YearOfStudy:1, GPA: 3.20 }
 ]
-console.log(student)
+
+//form default values 
+
+const defaultValues = {
+  numberOfMales: "",
+  numberOfFemales: ""
+
+};
 
 function Applicants() {
     const classes = useStyles();
+    
+    const [selectionValue, setSelectionValue] = useState(defaultValues)
+    
+    // handling change input on form
+
+    const handleInputChange = (e) => {
+      const {name , value} = e.target;
+      setSelectionValue({
+        ...selectionValue,
+        [name] : value,
+      })
+    }
+    // form control
+    const handleSubmit = (event) => {
+      event.preventDefault();
+
+    }
     return (
         <div>
 
         
        <Box>
         <PageHeader pageTitle="All Applicants "/>
+        {/* Selection form  */}
+        <form onSubmit={handleSubmit}>
+          <Grid className={classes.selectionForm}>
+            <Grid item>
+              <TextField 
+              id = "male-input"
+              name = "numberOfMales"
+              label = "Number of Males"
+              type = "number"
+              InputProps={{
+                inputProps: { min: 0 }
+              }}
+              value={selectionValue.numberOfMales}
+              onChange={handleInputChange}
+              />
+            </Grid>
+
+            <Grid item>
+              <TextField 
+              id = "male-input"
+              name = "numberOfFemales"
+              label = "Number of Females"
+              type = "number"
+              InputProps={{
+                inputProps: { min: 0 }
+              }}
+              value={selectionValue.numberOfFemales}
+              onChange={handleInputChange}
+              />
+            </Grid>
+          </Grid>
+        </form>
         <Button className ={classes.selectButton} color = "primary"variant='contained'>Select</Button>
 
     </Box>
@@ -60,6 +118,7 @@ function Applicants() {
       </TableRow>
     ))}
   </TableBody>
+  
 </Table>
 </TableContainer>
 </div>
