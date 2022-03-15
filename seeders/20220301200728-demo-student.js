@@ -130,7 +130,7 @@ module.exports = {
       regnum: "Bsc/com/02/17",
       email: "bsc-info-02-17@unima.ac.mw",
       password: "$2a$10$OHuKXrOo2IqIzouB2/na2OICR2w8BkSnk3TyA80QzZhcl4W5lAUp2",
-      yrofstudy: 1,
+      yrofstudy: 3,
 
       gender: "Male",
       gpa: 3.9,
@@ -228,7 +228,7 @@ module.exports = {
   {
     id: 16,
     uuid: "68f40592-999c-11ec-b909-0242ac120002",
-    firstname: "Josesh",
+    firstname: "Josophine",
     lastname: "Banda",
     regnum: "Bsc/info/104/16",
     email: "bsc-info-104-16@unima.ac.mw",

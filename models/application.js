@@ -45,12 +45,12 @@ User.hasOne(Beneficiary, {
 })
 Beneficiary.belongsTo(User)
 
-User.hasMany(User_role, {
-  foreignKey: 'userId',
+Application.hasOne(Beneficiary, {
+  foreignKey: 'applicationId',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE'
 })
-User_role.belongsTo(User)
+Beneficiary.belongsTo(Application)
 
 Role.hasMany(User_role, {
   foreignKey: 'roleId',
@@ -58,5 +58,12 @@ Role.hasMany(User_role, {
   onUpdate: 'CASCADE'
 })
 User_role.belongsTo(Role)
+
+User.hasMany(User_role, {
+  foreignKey: 'userId',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+})
+User_role.belongsTo(User)
 
 module.exports = Application

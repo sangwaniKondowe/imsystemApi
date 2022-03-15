@@ -41,7 +41,7 @@ exports.sending_application = async (req, res) => {
         
       
       Application.create(reqBody)
-      res.send({succes:true, message:"Application success"})
+      res.send({success:true, message:"Application success"})
 
     } else {
      res.send({
