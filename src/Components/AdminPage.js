@@ -22,6 +22,7 @@ import {BrowserRouter,Route,Switch} from 'react-router-dom'
 import Dashboard from './Dashboard';
 
 import {NavLink} from 'react-router-dom'
+import AdminLogin from './AdminLogin';
 
 const drawerWidth = 240;
 
@@ -137,7 +138,7 @@ function Admin() {
   const itemList = [{
     text: "Dashboard",
     icon: <DashboardIcon/>,
-    link: "/"
+    link: "/dashboard"
   },
   // {
   //   text: "Scholarships",
@@ -146,9 +147,9 @@ function Admin() {
 
   // },
   {
-    text: "Applicantions",
+    text: "Applications",
     icon: <PersonIcon />,
-    link: "/applicants"
+    link: "/applications"
   },
   {
     text:"Beneficiaries",
@@ -234,8 +235,9 @@ function Admin() {
    
    
  <Switch>
- <Route exact path = "/" render={() => <Dashboard/>}/>
- <Route exact path ="/Applicants" render={() => <Applicants/>}/>
+   
+ <Route exact path = "/dashboard" render={() => <Dashboard/>}/>
+ <Route exact path ="/applications" render={() => <Applicants/>}/>
  <Route exact path ="/Beneficiaries" render={() => <Beneficiaries/>}/>
  
  </Switch>
