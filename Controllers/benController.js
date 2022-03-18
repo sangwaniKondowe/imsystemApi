@@ -2,6 +2,7 @@
 
 const Application = require('../models/application');
 const Beneficiary = require('../models/beneficiary');
+const User = require('../models/user');
 
 
 
@@ -62,10 +63,22 @@ exports.getBeneficiary = async(req, res) => {
 
       const uuid = req.params.applicationUuid
 
+      const attributes1 = [
+                    "uuid",
+                ]
+
       const addBeneficiary = await Application.findOne({
           where: {
             uuid,
-          }
+          },
+          attributes: attributes1,
+          include: [
+            {
+              model: User,
+              attributes: [ ]
+            }
+          ]
+
       })
       if (addBeneficiary) {
         console.log(addBeneficiary)
