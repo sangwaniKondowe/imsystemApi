@@ -2,11 +2,19 @@
 import './App.css';
 import React from 'react';
 import AdminPage from './Components/AdminPage';
-import AdminLogin from './Components/AdminLogin';
-import {Admin,  Resource ,fetchUtils} from "react-admin";
+import Login from './Components/Login';
+import Applicants from './Components/Applicants'
+import Beneficiaries from './Components/Beneficiaries'
+import Dashboard from './Components/Dashboard';
 import simpleRestProvider from 'ra-data-simple-rest';
 import { createBrowserHistory as createHistory } from 'history';
-import {BrowserRouter} from 'react-router-dom'
+import { Routes,Route } from 'react-router-dom';
+import Layout from './Components/Layout';
+import StudentPage from './Components/User/StudentPage';
+import RequireAuth from './Components/RequireAuth';
+
+
+
 
 
 
@@ -14,9 +22,27 @@ import {BrowserRouter} from 'react-router-dom'
 function App() {
   
 return(
-  <BrowserRouter>
-   <AdminPage />
-  </BrowserRouter>
+  <div>
+<Routes>
+  <Route path="/" element={<Layout/>}>
+    {/* public route */}
+
+    <Route path="login" element={<Login/>}/>
+
+    {/* protected routes */}
+      <Route element={<RequireAuth/>}>
+    <Route path="/" element = {<AdminPage/>}>
+
+    </Route>
+
+    <Route path="student" element={<StudentPage/>}>
+
+    </Route>
+    </Route>
+  </Route>
+</Routes>
+  
+</div>
  
  );
 }

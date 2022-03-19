@@ -18,11 +18,10 @@ import { blue, blueGrey,grey,white } from '@material-ui/core/colors';
 import Applicants from './Applicants'
 import Beneficiaries from './Beneficiaries'
 
-import {BrowserRouter,Route,Switch} from 'react-router-dom'
+
 import Dashboard from './Dashboard';
 
-import {NavLink} from 'react-router-dom'
-import AdminLogin from './AdminLogin';
+import AdminLogin from './Login';
 
 const drawerWidth = 240;
 
@@ -216,7 +215,7 @@ function Admin() {
 
   return (
     <ListItem 
-    component={NavLink}
+    
      to = {item.link} 
      button key={index}>
       {icon && <ListItemIcon>{icon}</ListItemIcon>}
@@ -233,14 +232,14 @@ function Admin() {
 
      <Box className = {classes.wrapper}>
    
-   
+{/*    
  <Switch>
-   
+ 
  <Route exact path = "/dashboard" render={() => <Dashboard/>}/>
  <Route exact path ="/applications" render={() => <Applicants/>}/>
  <Route exact path ="/Beneficiaries" render={() => <Beneficiaries/>}/>
  
- </Switch>
+ </Switch> */}
  
 
  </Box>
