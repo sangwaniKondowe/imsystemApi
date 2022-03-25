@@ -18,6 +18,7 @@ app.use('/login', AuthRoutes)
 app.use('/application',require('./Routes/Routes'));
 app.use('/beneficiary', require('./Routes/BeneficiaryRoute'));
 app.use('/userRole', require('./Routes/UserRoute'));
+app.use('/mail', require('./Routes/Routes'))
 
 
 const PORT = process.env.PORT || 5000;

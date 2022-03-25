@@ -2,11 +2,44 @@
 
 const Application = require('../models/application');
 const User = require('../models/user')
-const { Sequelize, where } = require("sequelize");
 const User_role = require('../models/user_role');
-const console = require('console');
 const crypto = require('crypto').webcrypto
 
+
+
+exports.sendmail = async(req, res, next) => {
+  res.status(200).json({ msg: 'Working' })
+  };
+
+exports.post = async(req, res, next) => {
+  //make mailable object
+  const mail = {
+  from: process.env.SMTP_FROM_EMAIL,
+  to: process.env.SMTP_TO_EMAIL,
+  subject: 'New Contact Form Submission',
+  text: `
+    from:
+    ${req.body.name}
+
+    contact details
+    email: ${req.body.email}
+    phone: ${req.body.tel}
+
+    message:
+    ${req.body.message}`,
+  }
+  transporter.sendMail(mail, (err, data) => {
+      if (err) {
+          res.json({
+              status: 'fail',
+          })
+      } else {
+          res.json({
+              status: 'success',
+          })
+      }
+  })
+}
 
 
 // Getting all applications 
