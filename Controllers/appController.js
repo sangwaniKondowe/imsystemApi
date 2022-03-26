@@ -2,10 +2,44 @@
 
 const Application = require('../models/application');
 const User = require('../models/user')
-const { Sequelize } = require("sequelize");
 const User_role = require('../models/user_role');
 const crypto = require('crypto').webcrypto
 
+
+
+exports.sendmail = async(req, res, next) => {
+  res.status(200).json({ msg: 'Working' })
+  };
+
+exports.post = async(req, res, next) => {
+  //make mailable object
+  const mail = {
+  from: process.env.SMTP_FROM_EMAIL,
+  to: process.env.SMTP_TO_EMAIL,
+  subject: 'New Contact Form Submission',
+  text: `
+    from:
+    ${req.body.name}
+
+    contact details
+    email: ${req.body.email}
+    phone: ${req.body.tel}
+
+    message:
+    ${req.body.message}`,
+  }
+  transporter.sendMail(mail, (err, data) => {
+      if (err) {
+          res.json({
+              status: 'fail',
+          })
+      } else {
+          res.json({
+              status: 'success',
+          })
+      }
+  })
+}
 
 
 // Getting all applications 
@@ -36,6 +70,8 @@ exports.sending_application = async (req, res) => {
     
 
     if (studentExist) {
+
+      
       const reqBody = { ...req.body, userId:studentExist.id ,status: "PENDING"}
 
         
@@ -55,6 +91,7 @@ exports.sending_application = async (req, res) => {
   }
 }
  
+
 
 // sending application uuid to beneficiaries table
 
@@ -88,13 +125,7 @@ exports.sending_application = async (req, res) => {
 // }
 
 
-// exports.markComplete = async (req ,res) =>{
 
-//      await Application.findAll({ order: Sequelize.literal('random()'), limit: 4})
-//     .then((application) => {
-//       res.status(200).json({ application })
-//     })
-//   };
 
 
 const generateRandom = (min, max, maxRange)=>{
@@ -108,6 +139,8 @@ const generateRandom = (min, max, maxRange)=>{
   return min + (byteArray[0] % range);
 
 }
+
+
 exports.markComplete = async (req, res) => { 
   const {males, females }= req.query
 
@@ -115,7 +148,9 @@ exports.markComplete = async (req, res) => {
 
     await Application.findAll({
         include: User,
-    }).then((response) => {
+        raw : true ,
+        nest: true 
+    }).then(async (response) => {
       
 
       let famaleIndes = []
@@ -126,32 +161,72 @@ exports.markComplete = async (req, res) => {
      let malesActulRequired = males > malesArr.length?malesArr.length:males
      let mToReturn = []
      let fToReturn = []
+     let fHolder = []
+     let mHolder = []
+
+     const maleSetToReturn = new Set()
+     const femaleSettoReturn = new Set();
      if(males >= malesArr.length){
         mToReturn=malesArr
      }else{
-       for(let i = 0; i < males; i++){
-         let first = malesArr[generateRandom(0, malesArr.length-1, 256)]
-           mToReturn.push(first)
-         }
-     }
+      while(mToReturn.length != males){
+        let first = malesArr[generateRandom(0, malesArr.length-1, 256)]
+         mHolder.push(first)
+         mToReturn = mHolder.filter((value, index, self) => 
+         self.findIndex(v => v.id === value.id) === index
+       );
+      }
 
+     }
      if(females >= femaleArr.length){
       fToReturn=femaleArr
    }else{
-     for(let i = 0; i < females; i++){
-       let first = femaleArr[generateRandom(0, femaleArr.length-1, 256)]
-         fToReturn.push(first)
+      while(fToReturn.length != females){
+        let first = femaleArr[generateRandom(0, femaleArr.length-1, 256)]
+         fHolder.push(first)
+         fToReturn = fHolder.filter((value, index, self) => 
+         self.findIndex(v => v.id === value.id) === index
+       );
+      }
        }
-   }
-   
-
-
-
-   let selected= mToReturn.concat(fToReturn)
-
   
-      res.send({selected})
+       const m = []
+       const f = []
+
+
+      for(let fem of femaleSettoReturn){
+        f.push(fem) 
+      }
+     for(let mal of maleSetToReturn){
+      m.push(mal) 
+     } 
+ // = m.concat(f)
+
+
+  let unique =mToReturn.concat(fToReturn)
+      unique.map(async app=>{
+     await Application.update({ status: "COMPLETED" }, {
+        where: { id:app.id }
+      })
+     })
+   
+ 
+
+let toRData = unique.map(ui => {
+  return {...ui, status:"COMPLETED"}
+})
+      res.send({applications : toRData})
+
     })}
+
+
+
+
+
+
+
+
+
   // try {
   // const uuid = req.params.applicationUUID;
 
@@ -216,22 +291,22 @@ exports.markComplete = async (req, res) => {
 //    }
 // }
 
-// Get number of all complete aplications
+//Get number of all complete aplications
 
-// exports.statusComplete = async (req, res) => {
-//   const all = await Application.count({
-//     where: {
-//       status: "COMPLETED",
-//     },
+exports.statusComplete = async (req, res) => {
+  const all = await Application.count({
+    where: {
+      status: "COMPLETED",
+    },
 
-//   })
-//   if (all) {
+  })
+  if (all) {
 
-//     res.send(`approved applications: ${all}`)
-//   } else {
-//     res.status(404).send("no approved applications");
-//   }
-// }
+    res.send(`approved applications: ${all}`)
+  } else {
+    res.status(404).send("no approved applications");
+  }
+}
 // }
 // Get number of all pending applications
 

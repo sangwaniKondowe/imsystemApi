@@ -29,7 +29,7 @@ class AuthController {
         try {
             const { email, password } = req.body;
 
-            const student = await User.findOne({
+            const user = await User.findOne({
                 where: {
                     email,
                 },
@@ -37,7 +37,7 @@ class AuthController {
             });
            
 
-            if(student === null) {
+            if(user === null) {
 
                 
             res.status(401).json({
@@ -45,10 +45,10 @@ class AuthController {
             });
             }
 
-            const validPassword = bcrypt.compareSync(password, student.password);
+            const validPassword = bcrypt.compareSync(password, user.password);
 
             if (validPassword) {
-                const userRoles = student.user_roles.map(r=>{return r.dataValues.roleId})
+                const userRoles = user.user_roles.map(r=>{return r.dataValues.roleId})
 
             
                 let ur = []
@@ -63,7 +63,7 @@ class AuthController {
                 const role=ur[0];
 
                 const data = {
-                    userId : student.id,
+                    userId : user.id,
                     roles : ur
                 }
                 const token = this.generateToken(data);
