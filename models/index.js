@@ -35,3 +35,7 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 module.exports = db;
+
+var cors = require('cors')
+
+app.use(cors()) 

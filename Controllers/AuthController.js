@@ -60,6 +60,7 @@ class AuthController {
                     })
                     ur.push(userRole.dataValues.role_name)
                 }
+                const role=ur[0];
 
                 const data = {
                     userId : student.id,
@@ -68,6 +69,7 @@ class AuthController {
                 const token = this.generateToken(data);
                 res.status(200).json({
                     token,
+                    role,
                     response: {
                         message: "logged in successfully!"
                     },
