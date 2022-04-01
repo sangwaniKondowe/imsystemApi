@@ -2,11 +2,14 @@
 
 const Application = require('../models/application');
 const Beneficiary = require('../models/beneficiary');
-const User = require('../models/user');
+const User_role = require('../models/user_role');
 
 
 
 exports.showBeneficiary = async (req, res) => {
+
+
+  try {
     const Beneficiaries = await Beneficiary.findAll({
     
     });
@@ -17,8 +20,11 @@ exports.showBeneficiary = async (req, res) => {
     } else {
       res.status(404).send("no messages");
     }
-  };
-
+  }
+  catch( err) {
+    console.log(err)
+  }
+}
 
 
 
@@ -32,6 +38,9 @@ exports.getBeneficiary = async(req, res) => {
         const attributes1 = [
             "uuid",
         ]
+
+    try {
+    
         
     const beneficiary = await Beneficiary.findOne({
         where: {
@@ -55,60 +64,13 @@ exports.getBeneficiary = async(req, res) => {
         res.status(404).send("no beneficiary with uuid:" + uuid);
       }
     } 
+   catch( err) {
+    console.log(err)
+  }
+}
 
     
-  exports.overrideSelection = async(req, res) => {
-
-    try {
-
-      const uuid = req.params.applicationUuid
-
-      const attributes1 = [
-                    "uuid",
-                ]
-
-      const addBeneficiary = await Application.findOne({
-          where: {
-            uuid,
-          },
-          attributes: attributes1,
-          include: [
-            {
-              model: User,
-              attributes: [ ]
-            }
-          ]
-
-      })
-      if (addBeneficiary) {
-        console.log(addBeneficiary)
-        Application.update({ status : "COMPLETED"}, {
-          where: {
-            uuid,
-          }
-
-        }).then(response => {
-
-          if (response === 1) {
-            
-
-            Beneficiary.create({
-            
-              applicationId: addBeneficiary.id,
-            })
-          }
-        })
-        res.send({ success:true, message:"Application success" })
-
-      } else {
-        res.send({
-          success:false
-        })
-      }
-      } catch( err) {
-        console.log(err)
-      }
-  }
+  
 
 
 

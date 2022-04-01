@@ -39,7 +39,7 @@ exports.getUsers = async (req, res) => {
             users.push(wP)
         }
 
-        //console.log(users)
+        console.log(users)
         res.send(users)
       }else {
         res.sendStatus(404);

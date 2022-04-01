@@ -1,5 +1,6 @@
 'use strict'
 
+const { Console } = require('console');
 const Application = require('../models/application');
 const User = require('../models/user')
 const User_role = require('../models/user_role');
@@ -54,7 +55,7 @@ exports.getall = async (req, res) => {
   }
 };
 
-//checking existence of scholarship and saving application with that scholarship id
+// student application
 
 exports.sending_application = async (req, res) => {
 
@@ -220,76 +221,44 @@ let toRData = unique.map(ui => {
     })}
 
 
+//override the auto-selection method
 
+exports.overrideSelection = async(req, res) => {
 
-
-
-
-
-
-  // try {
-  // const uuid = req.params.applicationUUID;
-
-  // const applicationExist = await Application.findOne({
-  //   where: {
-  //     uuid,
-  //     }
-  //   });
-  //   if (applicationExist){
-  //     Application.update({ status: "COMPLETED" }, {
-  //             where: { uuid }
-  //           })
-  //           .then(response => {
-  //             if(response == 1) {
-  //               Beneficiary.create({
-  //                 applicationId: applicationExist.id,
-  //                 scholarshipId: applicationExist.scholarshipId
-  //               })
-  //               res.send({
-  //                 success: true,
-  //                 message: "Application accepted",
-  //               })
-  //             }else{
-  //               res.send({
-  //                 success: false
-  //               })
-  //             }
+      const uuid = req.params.uuid;
+  
+      try {
+  
+        const Admin = await User_role.findOne({
+          where: {
+            id:req.userId,
+        
+          },
+        });
+        
+        if (Admin) {
+            const goApp = Application.findOne({
+              where : {
+                uuid,
+              }
+            })
+            if (goApp) {
               
-  //           })
-
-  //         }} catch (err){
-  //              console.log(err)
-  //         }
-//}
-
-
-
-// exports.changestatus = async (req, res) =>{
-//   const uuid = req.params.uuid;
-//  const application = await Application.findOne({where: {uuid}})
-
-
-//  if ( application ){
-
-//   const pending = Object.assign(application,{status:"pending"})
-//     pending.save()
-//     res.send("ok success")
-//  }
-// }
-
-// Marking an application as complete
-
-// exports.markComplete = async (req, res) => {
-//    const uuid = req.params.uuid;
-
-//    const application1 = await Application.findOne({where: {uuid}})
-
-//    if ( application1 ) {
-//      const complete = Object.assign(application1, {status: "PENDING" ? "COMPLETED" : ""})
-//      complete.save()
-//      res.send("Success")
-//    }
-// }
+              Application.update({ status: "COMPLETED" }, {
+                       where: { uuid }
+                     })
+  
+                res.send("Status Updated Successfully!")     
+              }
+           } else {
+          res.send({
+            success:false
+          })
+        }
+        } catch( err) {
+          console.log(err)
+        }
+    }
 
 //Get number of all complete aplications
 
@@ -307,7 +276,7 @@ exports.statusComplete = async (req, res) => {
     res.status(404).send("no approved applications");
   }
 }
-// }
+
 // Get number of all pending applications
 
 exports.statusPending = async (req, res) => {
@@ -323,4 +292,46 @@ exports.statusPending = async (req, res) => {
   } else {
     res.status(404).send("no pending applications");
   }
+} 
+
+exports.pendingApp = async (req, res) => {
+  const pending = await Application.findAll({
+
+      where : {
+          status: "PENDING"
+    },
+      include: [
+          {
+              model: User,
+          }   
+      ]
+  })
+  if(pending) {
+
+      const pendingA = []
+    
+      for(let i = 0; i < pending.length; i++){
+        let u = pending[i].user
+            //let role = pending[i].role
+           // let uder = {...u.datavalues, user: u.firstname }
+          const wP = {
+              id: u.id,
+              uuid: u.uuid,
+              firstname: u.firstname,
+              lastname:u.lastname,
+              email:u.email,
+              regnum:u.regnum,
+              yrofstudy:u.yrofstudy,
+              gender:u.gender,
+              gpa:u.gpa,
+
+        }
+          pendingA.push(wP)
+       }
+
+      //console.log(users)
+      res.send(pending)
+    }else {
+      res.sendStatus(404);
+    }
 }
