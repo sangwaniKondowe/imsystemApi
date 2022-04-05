@@ -2,7 +2,7 @@ const { Sequelize } = require("sequelize");
 const connection = new Sequelize(
   "scholarApi",
   "postgres",
-  "12345",
+  "admin",
   {
     host: "localhost",
     dialect: "postgres",

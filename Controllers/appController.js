@@ -295,7 +295,7 @@ exports.statusPending = async (req, res) => {
 } 
 
 exports.pendingApp = async (req, res) => {
-  const pending = await Application.findAll({
+  const user = await Application.findAll({
 
       where : {
           status: "PENDING"
@@ -306,31 +306,30 @@ exports.pendingApp = async (req, res) => {
           }   
       ]
   })
-  if(pending) {
+  if(user) {
 
-      const pendingA = []
-    
-      for(let i = 0; i < pending.length; i++){
-        let u = pending[i].user
-            //let role = pending[i].role
-           // let uder = {...u.datavalues, user: u.firstname }
-          const wP = {
-              id: u.id,
-              uuid: u.uuid,
-              firstname: u.firstname,
-              lastname:u.lastname,
-              email:u.email,
-              regnum:u.regnum,
-              yrofstudy:u.yrofstudy,
-              gender:u.gender,
-              gpa:u.gpa,
+    const users = []
 
-        }
-          pendingA.push(wP)
-       }
+        for(let i = 0; i < user.length; i++){
+            let u = user[i].user
+            let uder = { ...u.dataValues }
+            
+            const wP = {
+                id: uder.id,
+                uuid: uder.uuid,
+                firstname: uder.firstname,
+                lastname: uder.lastname,
+                email:uder.email,
+                regnum:uder.regnum,
+                yrofstudy:uder.yrofstudy,
+                gender:uder.gender,
+                gpa:uder.gpa
+            }
+            users.push(wP)
+          }
 
-      //console.log(users)
-      res.send(pending)
+       console.log(users)
+        res.send(users)
     }else {
       res.sendStatus(404);
     }
