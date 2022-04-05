@@ -46,14 +46,24 @@ exports.post = async(req, res, next) => {
 // Getting all applications 
 
 
+// exports.getall = async (req, res) => {
+//   const Applications = await Application.findAll();
+//   if (Applications) {
+//     res.status(200).json({ Applications });
+//   } else {
+//     res.status(404).send("no messages");
+//   }
+// };
 exports.getall = async (req, res) => {
-  const Applications = await Application.findAll();
+  const Applications = await Application.count();
   if (Applications) {
-    res.status(200).json({ Applications });
+    res.status(200).json({ Applications: Applications });
   } else {
     res.status(404).send("no messages");
   }
 };
+
+
 
 // student application
 
