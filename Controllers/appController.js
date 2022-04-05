@@ -177,7 +177,11 @@ exports.markComplete = async (req, res) => {
   
 
     await Application.findAll({
-        include: User,
+
+        include: {
+          model: User,
+        }
+        ,
         raw : true ,
         nest: true 
     }).then(async (response) => {
@@ -245,9 +249,31 @@ exports.markComplete = async (req, res) => {
 let toRData = unique.map(ui => {
   return {...ui, status:"COMPLETED"}
 })
-      res.send({applications : toRData})
+if(toRData) {
 
-    })}
+ const  contoRDatas = []
+
+ //console.log(toRData)
+let user=[];
+ toRData.forEach(element => {
+  user.push({
+    "id": element.id,
+    "uuid": element.uuid,
+   "firstname":element.user.firstname,
+   "lastname":element.user.lastname,
+   "email":element.user.email,
+   "regnum":element.user.regnum,
+   "yrofstudy":element.user.yrofstudy,
+   "gender":element.user.gender,
+   "gpa":element.user.gpa,
+  }
+  );
+    
+ });
+ res.send({complete : user})
+
+    }
+})}
 
 
 //override the auto-selection method
