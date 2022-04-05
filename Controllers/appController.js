@@ -73,16 +73,37 @@ exports.sending_application = async (req, res) => {
     if (studentExist) {
 
       
-      const reqBody = { ...req.body, userId:studentExist.id ,status: "PENDING"}
+      const app = Application.findOne({
+        where: {
+          userId: studentExist.id
+        }
+      })
+        if(!app) {
+          const reqBody = { ...req.body, userId:studentExist.id ,status: "PENDING"}
 
-        
+          Application.create(reqBody)
+            res.send({success:true, message:"Application success"})
+        } else {
+            res.send({success:false, message:"Oops...You can only apply once."})
+        }
       
-      Application.create(reqBody)
-      res.send({success:true, message:"Application success"})
+       
 
-    } else {
+      
+      
+    //   if(studentExist.id !== reqBody.userId) {
+    //     res.send({success:true, message:"Application success"})
+        
+    //   }
+    //  else {
+    //   res.send({success:false, message:"Oops...You can only apply once."})
+       
+    //  }
+
+    }
+     else {
      res.send({
-       sucess:false
+       succsess:false
      })
   };
 
@@ -271,7 +292,7 @@ exports.statusComplete = async (req, res) => {
   })
   if (all) {
 
-    res.send(`approved applications: ${all}`)
+    res.send({applications: all})
   } else {
     res.status(404).send("no approved applications");
   }
@@ -288,7 +309,7 @@ exports.statusPending = async (req, res) => {
   })
   if (all) {
 
-    res.send(`pending applications: ${all}`)
+    res.send({applications: all})
   } else {
     res.status(404).send("no pending applications");
   }
