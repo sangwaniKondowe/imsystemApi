@@ -59,6 +59,8 @@ exports.getall = async (req, res) => {
 
 exports.sending_application = async (req, res) => {
 
+  
+
   try{
     
 
@@ -73,7 +75,7 @@ exports.sending_application = async (req, res) => {
     if (studentExist) {
 
       
-      const app = Application.findOne({
+      const app =  await Application.findOne({
         where: {
           userId: studentExist.id
         }
@@ -85,11 +87,7 @@ exports.sending_application = async (req, res) => {
             res.send({success:true, message:"Application success"})
         } else {
             res.send({success:false, message:"Oops...You can only apply once."})
-        }
-      
-       
-
-      
+        }   
       
     //   if(studentExist.id !== reqBody.userId) {
     //     res.send({success:true, message:"Application success"})
