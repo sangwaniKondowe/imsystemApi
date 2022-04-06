@@ -251,9 +251,6 @@ let toRData = unique.map(ui => {
 })
 if(toRData) {
 
- const  contoRDatas = []
-
- //console.log(toRData)
 let user=[];
  toRData.forEach(element => {
   user.push({
@@ -362,28 +359,24 @@ exports.pendingApp = async (req, res) => {
       ]
   })
   if(user) {
-
+    console.log(user)
     const users = []
 
-        for(let i = 0; i < user.length; i++){
-            let u = user[i].user
-            let uder = { ...u.dataValues }
-            
-            const wP = {
-                id: uder.id,
-                uuid: uder.uuid,
-                firstname: uder.firstname,
-                lastname: uder.lastname,
-                email:uder.email,
-                regnum:uder.regnum,
-                yrofstudy:uder.yrofstudy,
-                gender:uder.gender,
-                gpa:uder.gpa
-            }
-            users.push(wP)
-          }
-
-       console.log(users)
+    user.forEach(element => {
+      users.push({
+        "id": element.id,
+        "uuid": element.uuid,
+       "firstname":element.user.firstname,
+       "lastname":element.user.lastname,
+       "email":element.user.email,
+       "regnum":element.user.regnum,
+       "yrofstudy":element.user.yrofstudy,
+       "gender":element.user.gender,
+       "gpa":element.user.gpa,
+      }
+      );
+        
+     });
         res.send(users)
     }else {
       res.sendStatus(404);
