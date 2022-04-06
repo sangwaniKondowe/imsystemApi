@@ -414,6 +414,7 @@ exports.pendingApp = async (req, res) => {
       users.push({
         "id": element.id,
         "uuid": element.uuid,
+        "userUUID": element.user.uuid,
         "firstname": element.user.firstname,
         "lastname": element.user.lastname,
         "email": element.user.email,
@@ -446,10 +447,10 @@ exports.allWithDetails = async (req, res) => {
 
     user.forEach(element => {
       users.push({
-        // "id": element.id,
-        // "uuid1": element.uuid,
+         "id": element.id,
+        "uuid": element.uuid,
         "status": element.status,
-        "uuid": element.user.uuid,
+        "userUUID": element.user.uuid,
         "firstname": element.user.firstname,
         "lastname": element.user.lastname,
         "email": element.user.email,
