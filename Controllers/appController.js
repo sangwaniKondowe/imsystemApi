@@ -5,42 +5,9 @@ const Application = require('../models/application');
 const User = require('../models/user')
 const User_role = require('../models/user_role');
 const crypto = require('crypto').webcrypto
-
-
-
-exports.sendmail = async(req, res, next) => {
-  res.status(200).json({ msg: 'Working' })
-  };
-
-exports.post = async(req, res, next) => {
-  //make mailable object
-  const mail = {
-  from: process.env.SMTP_FROM_EMAIL,
-  to: process.env.SMTP_TO_EMAIL,
-  subject: 'New Contact Form Submission',
-  text: `
-    from:
-    ${req.body.name}
-
-    contact details
-    email: ${req.body.email}
-    phone: ${req.body.tel}
-
-    message:
-    ${req.body.message}`,
-  }
-  transporter.sendMail(mail, (err, data) => {
-      if (err) {
-          res.json({
-              status: 'fail',
-          })
-      } else {
-          res.json({
-              status: 'success',
-          })
-      }
-  })
-}
+const nodemailer = require('nodemailer');
+const { response } = require('express');
+const e = require('express');
 
 
 // Getting all applications 
@@ -69,58 +36,58 @@ exports.getall = async (req, res) => {
 
 exports.sending_application = async (req, res) => {
 
-  
 
-  try{
-    
+
+  try {
+
 
     const studentExist = await User_role.findOne({
       where: {
-        id:req.userId,
-    
+        id: req.userId,
+
       },
     });
-    
+
 
     if (studentExist) {
 
-      
-      const app =  await Application.findOne({
+
+      const app = await Application.findOne({
         where: {
           userId: studentExist.id
         }
       })
-        if(!app) {
-          const reqBody = { ...req.body, userId:studentExist.id ,status: "PENDING"}
+      if (!app) {
+        const reqBody = { ...req.body, userId: studentExist.id, status: "PENDING" }
 
-          Application.create(reqBody)
-            res.send({success:true, message:"Application success"})
-        } else {
-            res.send({success:false, message:"Oops...You can only apply once."})
-        }   
-      
-    //   if(studentExist.id !== reqBody.userId) {
-    //     res.send({success:true, message:"Application success"})
-        
-    //   }
-    //  else {
-    //   res.send({success:false, message:"Oops...You can only apply once."})
-       
-    //  }
+        Application.create(reqBody)
+        res.send({ success: true, message: "Application success" })
+      } else {
+        res.send({ success: false, message: "Oops...You can only apply once." })
+      }
+
+      //   if(studentExist.id !== reqBody.userId) {
+      //     res.send({success:true, message:"Application success"})
+
+      //   }
+      //  else {
+      //   res.send({success:false, message:"Oops...You can only apply once."})
+
+      //  }
 
     }
-     else {
-     res.send({
-       succsess:false
-     })
-  };
+    else {
+      res.send({
+        succsess: false
+      })
+    };
 
   } catch (err) {
 
     console.log(err)
   }
 }
- 
+
 
 
 // sending application uuid to beneficiaries table
@@ -141,7 +108,7 @@ exports.sending_application = async (req, res) => {
 //       if (response == 1) {
 //         Beneficiary.create({
 //           applicationId: application2.id,
-    
+
 //         })
 //         res.send({
 //           success: true,
@@ -158,12 +125,12 @@ exports.sending_application = async (req, res) => {
 
 
 
-const generateRandom = (min, max, maxRange)=>{
+const generateRandom = (min, max, maxRange) => {
   var byteArray = new Uint8Array(1)
   crypto.getRandomValues(byteArray)
-  var range = max-min+1
-  if(byteArray[0]>=Math.floor(maxRange/range)*range){
-      return generateRandom(min, max, maxRange)
+  var range = max - min + 1
+  if (byteArray[0] >= Math.floor(maxRange / range) * range) {
+    return generateRandom(min, max, maxRange)
   }
 
   return min + (byteArray[0] % range);
@@ -171,146 +138,227 @@ const generateRandom = (min, max, maxRange)=>{
 }
 
 
-exports.markComplete = async (req, res) => { 
-  const {males, females }= req.query
-
-  
-
-    await Application.findAll({
-
-        include: {
-          model: User,
-        }
-        ,
-        raw : true ,
-        nest: true 
-    }).then(async (response) => {
-      
-
-      let famaleIndes = []
-     const femaleArr = response.filter(f=>f.user.gender==="Female")
-     const malesArr = response.filter(f=>f.user.gender==="Male")
+exports.markComplete = async (req, res) => {
+  const { males, females } = req.query
 
 
-     let malesActulRequired = males > malesArr.length?malesArr.length:males
-     let mToReturn = []
-     let fToReturn = []
-     let fHolder = []
-     let mHolder = []
 
-     const maleSetToReturn = new Set()
-     const femaleSettoReturn = new Set();
-     if(males >= malesArr.length){
-        mToReturn=malesArr
-     }else{
-      while(mToReturn.length != males){
-        let first = malesArr[generateRandom(0, malesArr.length-1, 256)]
-         mHolder.push(first)
-         mToReturn = mHolder.filter((value, index, self) => 
-         self.findIndex(v => v.id === value.id) === index
-       );
+  await Application.findAll({
+
+    include: {
+      model: User,
+    }
+    ,
+    raw: true,
+    nest: true
+  }).then(async (response) => {
+
+
+    let famaleIndes = []
+    const femaleArr = response.filter(f => f.user.gender === "Female")
+    const malesArr = response.filter(f => f.user.gender === "Male")
+
+
+    let malesActulRequired = males > malesArr.length ? malesArr.length : males
+    let mToReturn = []
+    let fToReturn = []
+    let fHolder = []
+    let mHolder = []
+
+    const maleSetToReturn = new Set()
+    const femaleSettoReturn = new Set();
+    if (males >= malesArr.length) {
+      mToReturn = malesArr
+    } else {
+      while (mToReturn.length != males) {
+        let first = malesArr[generateRandom(0, malesArr.length - 1, 256)]
+        mHolder.push(first)
+        mToReturn = mHolder.filter((value, index, self) =>
+          self.findIndex(v => v.id === value.id) === index
+        );
       }
-
-     }
-     if(females >= femaleArr.length){
-      fToReturn=femaleArr
-   }else{
-      while(fToReturn.length != females){
-        let first = femaleArr[generateRandom(0, femaleArr.length-1, 256)]
-         fHolder.push(first)
-         fToReturn = fHolder.filter((value, index, self) => 
-         self.findIndex(v => v.id === value.id) === index
-       );
-      }
-       }
-  
-       const m = []
-       const f = []
-
-
-      for(let fem of femaleSettoReturn){
-        f.push(fem) 
-      }
-     for(let mal of maleSetToReturn){
-      m.push(mal) 
-     } 
- // = m.concat(f)
-
-
-  let unique =mToReturn.concat(fToReturn)
-      unique.map(async app=>{
-     await Application.update({ status: "COMPLETED" }, {
-        where: { id:app.id }
-      })
-     })
-   
- 
-
-let toRData = unique.map(ui => {
-  return {...ui, status:"COMPLETED"}
-})
-if(toRData) {
-
-let user=[];
- toRData.forEach(element => {
-  user.push({
-    "id": element.id,
-    "uuid": element.uuid,
-   "firstname":element.user.firstname,
-   "lastname":element.user.lastname,
-   "email":element.user.email,
-   "regnum":element.user.regnum,
-   "yrofstudy":element.user.yrofstudy,
-   "gender":element.user.gender,
-   "gpa":element.user.gpa,
-  }
-  );
-    
- });
- res.send({complete : user})
 
     }
-})}
+    if (females >= femaleArr.length) {
+      fToReturn = femaleArr
+    } else {
+      while (fToReturn.length != females) {
+        let first = femaleArr[generateRandom(0, femaleArr.length - 1, 256)]
+        fHolder.push(first)
+        fToReturn = fHolder.filter((value, index, self) =>
+          self.findIndex(v => v.id === value.id) === index
+        );
+      }
+    }
+
+    const m = []
+    const f = []
+
+
+    for (let fem of femaleSettoReturn) {
+      f.push(fem)
+    }
+    for (let mal of maleSetToReturn) {
+      m.push(mal)
+    }
+    // = m.concat(f)
+
+
+    let unique = mToReturn.concat(fToReturn)
+    unique.map(async app => {
+      await Application.update({ status: "COMPLETED" }, {
+        where: { id: app.id }
+      })
+    })
+
+
+
+    let toRData = unique.map(ui => {
+      return { ...ui, status: "COMPLETED" }
+    })
+    if (toRData) {
+
+      let user = [];
+      toRData.forEach(element => {
+        user.push({
+          "id": element.id,
+          "uuid": element.uuid,
+          "firstname": element.user.firstname,
+          "lastname": element.user.lastname,
+          "email": element.user.email,
+          "regnum": element.user.regnum,
+          "yrofstudy": element.user.yrofstudy,
+          "gender": element.user.gender,
+          "gpa": element.user.gpa,
+        }
+        );
+
+      });
+      res.send({ complete: user })
+
+      const emails = []
+      user.forEach(mail => {
+        emails.push({
+          "email": mail.email,
+        })
+      })
+      //console.log(emails)
+
+      //let stringMessage = Object.values(emails);
+
+      let allemails = emails.reduce((arr, email) => {
+        arr.push(email.email)
+        return (arr)
+      }, [])
+
+      //console.log(allemails)
+
+      sendEmail(allemails)
+
+
+    }
+  })
+}
+
+
+
+function sendEmail(allemails) {
+
+  // create reusable transporter object using the default SMTP transport
+  let transporter = nodemailer.createTransport({
+    host: "smtp.ethereal.email",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: 'buy73v3n7psfqxrh@ethereal.email', // generated ethereal user
+      pass: 'Wanhtrw7MRjv9p3xuS'  // generated ethereal password
+    },
+    tls: {
+      rejectUnauthorized: false
+    }
+  });
+
+  // setup email data with unicode symbols
+  let mailOptions = {
+    from: '"Glen Fally Contact" <myemail@gmail.com>', // sender address
+    to: allemails, // list of receivers
+    subject: 'Glen Fally Scholarship Approval', // Subject line
+    html: "<b>You have been selected.</b>" // html body
+  };
+
+  // send mail with defined transport object
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return console.log(error);
+    }
+    console.log('Email(s) sent: %s', info.messageId);
+    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
+  });
+
+}
+
+
 
 
 //override the auto-selection method
 
-exports.overrideSelection = async(req, res) => {
+exports.overrideSelection = async (req, res) => {
 
-      const uuid = req.params.uuid;
-  
-      try {
-  
-        const Admin = await User_role.findOne({
-          where: {
-            id:req.userId,
-        
-          },
-        });
-        
-        if (Admin) {
-            const goApp = Application.findOne({
-              where : {
-                uuid,
-              }
-            })
-            if (goApp) {
-              
-              Application.update({ status: "COMPLETED" }, {
-                       where: { uuid }
-                     })
-  
-                res.send("Status Updated Successfully!")     
-              }
-           } else {
-          res.send({
-            success:false
-          })
-        }
-        } catch( err) {
-          console.log(err)
-        }
+  const uuid = req.params.uuid;
+
+  try {
+
+    const Admin = await User_role.findOne({
+      where: {
+        id: req.userId,
+
+      },
+    });
+    if (Admin === null) {
+      res.status(401).json({ message: "no such department name" });
     }
+    else {
+      const goApp = await Application.findOne({
+        where: {
+          uuid
+        }
+      });
+      if (goApp) {
+        const select = await Application.update({ status: "COMPLETED" }, {
+          where: { uuid }
+        });
+        if (select) {
+          const ss = await Application.findOne({
+            where: {
+              uuid: goApp.uuid,
+            },
+            include: {
+              model: User
+            }
+          });
+          if (ss) {
+            var allemails = []
+            let userEmail = ss.user.email
+            allemails.push(userEmail)
+            sendEmail(allemails)
+            res.send("Status Updated Successfully!")
+
+          }
+          
+          
+        }
+      }
+      else {
+        res.send({
+          success: false
+        })
+      }
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}
 
 //Get number of all complete aplications
 
@@ -323,7 +371,7 @@ exports.statusComplete = async (req, res) => {
   })
   if (all) {
 
-    res.send({applications: all})
+    res.send({ applications: all })
   } else {
     res.status(404).send("no approved applications");
   }
@@ -340,25 +388,25 @@ exports.statusPending = async (req, res) => {
   })
   if (all) {
 
-    res.send({applications: all})
+    res.send({ applications: all })
   } else {
     res.status(404).send("no pending applications");
   }
-} 
+}
 
 exports.pendingApp = async (req, res) => {
   const user = await Application.findAll({
 
-      where : {
-          status: "PENDING"
+    where: {
+      status: "PENDING"
     },
-      include: [
-          {
-              model: User,
-          }   
-      ]
+    include: [
+      {
+        model: User,
+      }
+    ]
   })
-  if(user) {
+  if (user) {
     console.log(user)
     const users = []
 
@@ -366,19 +414,55 @@ exports.pendingApp = async (req, res) => {
       users.push({
         "id": element.id,
         "uuid": element.uuid,
-       "firstname":element.user.firstname,
-       "lastname":element.user.lastname,
-       "email":element.user.email,
-       "regnum":element.user.regnum,
-       "yrofstudy":element.user.yrofstudy,
-       "gender":element.user.gender,
-       "gpa":element.user.gpa,
+        "firstname": element.user.firstname,
+        "lastname": element.user.lastname,
+        "email": element.user.email,
+        "regnum": element.user.regnum,
+        "yrofstudy": element.user.yrofstudy,
+        "gender": element.user.gender,
+        "gpa": element.user.gpa,
       }
       );
-        
-     });
-        res.send(users)
-    }else {
-      res.sendStatus(404);
-    }
+
+    });
+    res.send(users)
+  } else {
+    res.sendStatus(404);
+  }
+}
+
+
+exports.allWithDetails = async (req, res) => {
+  const user = await Application.findAll({
+    include: [
+      {
+        model: User,
+      }
+    ]
+  })
+  if (user) {
+    console.log(user)
+    const users = []
+
+    user.forEach(element => {
+      users.push({
+        // "id": element.id,
+        // "uuid1": element.uuid,
+        "status": element.status,
+        "uuid": element.user.uuid,
+        "firstname": element.user.firstname,
+        "lastname": element.user.lastname,
+        "email": element.user.email,
+        "regnum": element.user.regnum,
+        "yrofstudy": element.user.yrofstudy,
+        "gender": element.user.gender,
+        "gpa": element.user.gpa,
+      }
+      );
+
+    });
+    res.send(users)
+  } else {
+    res.sendStatus(404);
+  }
 }

@@ -23,7 +23,6 @@ app.use(bodyParser.json())
 app.use('/login', AuthRoutes)
 app.use('/application',require('./Routes/Routes'));
 app.use('/userRole', require('./Routes/UserRoute'));
-app.use('/mail', require('./Routes/Routes'))
 
 
 const PORT = process.env.PORT || 5000;
