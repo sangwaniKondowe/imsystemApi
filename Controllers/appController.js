@@ -148,8 +148,8 @@ exports.markComplete = async (req, res) => {
 
 
     let famaleIndes = []
-    const femaleArr = response.filter(f => f.user.gender === "Female")
-    const malesArr = response.filter(f => f.user.gender === "Male")
+    const femaleArr = response.filter(f => f.user.gender === "Female" && f.status === "PENDING")
+    const malesArr = response.filter(f => f.user.gender === "Male" && f.status === "PENDING")
 
 
     let malesActulRequired = males > malesArr.length ? malesArr.length : males
