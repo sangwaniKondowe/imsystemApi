@@ -4,6 +4,7 @@ import {Box, CardContent, Grid, Typography,Card} from '@material-ui/core'
 import BarGraph from '../Graphs/BarGraph'
 import {useStyles} from '../BodyStyles'
 import ChartGraph from '../Graphs/ChartGraph'
+import Beneficiaries from '../Beneficiaries'
 
 function CommonGraphComponents() {
     const classes = useStyles()
@@ -18,7 +19,7 @@ function CommonGraphComponents() {
                              Scholarship Overview
 
                          </Typography>
-                         <BarGraph/>
+                         <Beneficiaries/>
                      </CardContent>
                  </Card>
                  </Grid>

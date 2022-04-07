@@ -1,50 +1,33 @@
 
 import './App.css';
 import React from 'react';
-import AdminPage from './Components/AdminPage';
+
 import Login from './Components/Login';
-import Applicants from './Components/Applicants'
-import Beneficiaries from './Components/Beneficiaries'
-import Dashboard from './Components/Dashboard';
-import simpleRestProvider from 'ra-data-simple-rest';
-import { createBrowserHistory as createHistory } from 'history';
-import { Routes,Route } from 'react-router-dom';
-import Layout from './Components/Layout';
+import {Routes, Route,Navigate} from 'react-router-dom'
+import { useStyles } from './Components/BodyStyles';
+import Navbar from './Components/Navbar';
+import InnerContent from './Components/InnerContent';
+import UserOutlet from './Components/UserOutlet'
 import StudentPage from './Components/User/StudentPage';
-import RequireAuth from './Components/RequireAuth';
+import Applicants from './Components/Applicants';
+import Beneficiaries from './Components/Beneficiaries';
+import Dashboard from './Components/Dashboard';
+import {Box} from '@material-ui/core'
 
-
-
-
-
-
+import Routing from './Components/Routing';
 
 function App() {
+    const classes= useStyles()
+   
+return( 
+    <div>
+   
+    <Routing/>
   
-return(
-  <div>
-<Routes>
-  <Route path="/" element={<Layout/>}>
-    {/* public route */}
+    </div>
 
-    <Route path="login" element={<Login/>}/>
-
-    {/* protected routes */}
-      <Route element={<RequireAuth/>}>
-    <Route path="/" element = {<AdminPage/>}>
-
-    </Route>
-
-    <Route path="student" element={<StudentPage/>}>
-
-    </Route>
-    </Route>
-  </Route>
-</Routes>
-  
-</div>
- 
- );
+    
+)
 }
 
 export default App;

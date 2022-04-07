@@ -1,12 +1,14 @@
-import React from 'react'
-
-
+import React, { useEffect } from 'react'
+import Applicants from './Applicants'
+import Beneficiaries from './Beneficiaries'
+import Dashboard from './Dashboard';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-
-import {Drawer,AppBar,
-  Toolbar,List,CssBaseline,Typography,Divider, 
-  IconButton,ListItem, ListItemIcon,ListItemText, Box,} from '@material-ui/core';
+import {
+  Drawer, AppBar,
+  Toolbar, List, CssBaseline, Typography, Divider,
+  IconButton, ListItem, ListItemIcon, ListItemText, Box, Button, Grid,
+} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import PeopleIcon from '@material-ui/icons/People';
 import SchoolIcon from '@material-ui/icons/School';
@@ -14,14 +16,12 @@ import PersonIcon from '@material-ui/icons/Person';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import { blue, blueGrey,grey,white } from '@material-ui/core/colors';
-import Applicants from './Applicants'
-import Beneficiaries from './Beneficiaries'
+import { blue, blueGrey, grey, white } from '@material-ui/core/colors';
+import { Routes, Router, Route, Navigate, Outlet } from 'react-router-dom';
 
 
-import Dashboard from './Dashboard';
+import { useNavigate } from 'react-router-dom';
 
-import AdminLogin from './Login';
 
 const drawerWidth = 240;
 
@@ -95,24 +95,24 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(4),
   },
- 
-  wrapper:{
-    
-      padding:theme.spacing(8,6,4,12)
-    
+
+  wrapper: {
+
+    padding: theme.spacing(8, 6, 4, 12)
+
   },
-  navlinks:{
-    color:blueGrey["A400"],
-    "& : hover ":{
-      color : blue["A400"]
+  navlinks: {
+    color: blueGrey["A400"],
+    "& : hover ": {
+      color: blue["A400"]
     },
-    " & div":{
+    " & div": {
       color: blue["A400"],
     }
   },
-  activeNavlinks:{
+  activeNavlinks: {
     color: grey["A700"],
-    "& div" : {
+    "& div": {
       color: blueGrey["A400"]
     }
   }
@@ -120,10 +120,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function Admin() {
-    const classes = useStyles();
+function Navbar() {
+  const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+
+  const navigate = useNavigate()
+
+ const LogOut = () =>{
+   navigate("/login")
+ }
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -134,10 +140,12 @@ function Admin() {
   };
 
 
-  const itemList = [{
+  const itemList = [
+    {
     text: "Dashboard",
-    icon: <DashboardIcon/>,
-    link: "/dashboard"
+    icon: <DashboardIcon />,
+    onClick: () => navigate("/dashboard")
+
   },
   // {
   //   text: "Scholarships",
@@ -148,27 +156,30 @@ function Admin() {
   {
     text: "Applications",
     icon: <PersonIcon />,
-    link: "/applications"
+    onClick: () => navigate("applicants")
   },
   {
-    text:"Beneficiaries",
-    icon:<PeopleIcon/>,
-    link: "/beneficiaries"
+    text: "Beneficiaries",
+    icon: <PeopleIcon />,
+    onClick: () => navigate("/beneficiaries")
   }
-]
+  ]
 
 
   return (
-      
-<div className={classes.root}>
+    <>
+    
+
+    <div className={classes.root}>
       <CssBaseline />
       <AppBar
+      
         position="fixed"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
       >
-        <Toolbar>
+        <Toolbar >
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -180,9 +191,20 @@ function Admin() {
           >
             <MenuIcon />
           </IconButton>
+          
           <Typography variant="h6" noWrap>
-          GLEN FALLY BENEFICIARY MANAGEMENT SYSTEM
+            GLEN FALLY BENEFICIARY MANAGEMENT SYSTEM
           </Typography>
+          <Grid container justifyContent='flex-end' direction='row'>
+          <Button
+          onClick={LogOut}
+          
+          color='primary'
+          variant="contained"
+          >LogOut</Button>
+          </Grid>
+         
+          
         </Toolbar>
       </AppBar>
       <Drawer
@@ -197,7 +219,7 @@ function Admin() {
             [classes.drawerClose]: !open,
           }),
         }}
-        className = {classes.container}
+       
       >
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawerClose}>
@@ -208,50 +230,40 @@ function Admin() {
 
 
 
-      {<List>
+        {<List>
 
-{itemList.map((item, index) => {
-  const {text,icon} = item;
+          {itemList.map((item, index) => {
+            const { text, icon, onClick } = item;
 
-  return (
-    <ListItem 
-    
-     to = {item.link} 
-     button key={index}>
-      {icon && <ListItemIcon>{icon}</ListItemIcon>}
-      <ListItemText primary = {text} />
-    </ListItem>
-  )
+            return (
+              <ListItem
+                onClick={onClick}
+                to={item.link}
+                button key={index}>
+                {icon && <ListItemIcon>{icon}</ListItemIcon>}
+                <ListItemText primary={text} />
+              </ListItem>
 
-})} 
+            )
 
-</List> }
-      
+          })}
+
+        </List>}
+
       </Drawer>
-      <main className = {classes.content}>
+      <main className={classes.content}>
 
-     <Box className = {classes.wrapper}>
-   
-{/*    
- <Switch>
- 
- <Route exact path = "/dashboard" render={() => <Dashboard/>}/>
- <Route exact path ="/applications" render={() => <Applicants/>}/>
- <Route exact path ="/Beneficiaries" render={() => <Beneficiaries/>}/>
- 
- </Switch> */}
- 
+        <Box className={classes.wrapper}>
+         
+        </Box>
 
- </Box>
- </main>
-</div>
+      </main>
+    </div>
 
- 
+  
+</>
 
-
-
-    
   )
 }
 
-export default Admin
+export default Navbar

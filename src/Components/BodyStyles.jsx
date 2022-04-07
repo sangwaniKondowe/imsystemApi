@@ -4,7 +4,7 @@ import {makeStyles} from '@material-ui/core'
 import {blueGrey,blue} from '@material-ui/core/colors'
 export const useStyles = makeStyles((theme) => ({
     section: {
-     margin:theme.spacing(3,0)
+     margin:theme.spacing(4,0)
     },
     pageTitle:{
         color:blueGrey[800],
@@ -84,5 +84,15 @@ selectionForm: {
   justify: "center",
   margin: "10px 10px"
 },
-
+content: {
+    flexGrow: 1,
+    padding: theme.spacing(4),
+    padding:theme.spacing(8,6,4,12)
+  },
+ 
+  wrapper:{
+    
+    
+    
+  }
 }));

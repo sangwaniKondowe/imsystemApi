@@ -1,19 +1,25 @@
-import React from 'react'
-import {Box, Grid, Typography, CardContent,Card} from '@material-ui/core'
-import {useStyles} from './BodyStyles'
-import {PageHeader} from './Common/CommonComponents'
+import React, { useEffect, useState } from 'react'
+import { Box, Grid, Typography, CardContent, Card } from '@material-ui/core'
+import { useStyles } from './BodyStyles'
+import { PageHeader } from './Common/CommonComponents'
 
 import CommonGraphComponents from './Common/CommonGraphComponents';
+import { useNavigate } from 'react-router-dom';
 
-function Dashboard () {
+import axios from 'axios';
 
-    const classes = useStyles();
+function Dashboard() {
 
-    const displayData = [
-      {
-        cardLabel: "",
-        cardTitle: " Applied",
-        applicantsNumber: " 100 "
+  const navigate = useNavigate()
+
+
+  const classes = useStyles();
+
+  const displayData = [
+    {
+      cardLabel: "",
+      cardTitle: " Applied",
+      applicantsNumber:"9"
 
 
 
@@ -25,74 +31,145 @@ function Dashboard () {
 
 
 
-  },
-  {
-    cardLabel: "",
-    cardTitle: "Not Selected",
-    applicantsNumber: " 30 "
+    },
+    {
+      cardLabel: "",
+      cardTitle: "Not Selected",
+      applicantsNumber: " 30 "
 
 
 
-}
+    }
   ]
+ const baseUrl = "http://localhost:5000/application/getall"
+ 
+ const baseTotalgUrl = "http://localhost:5000/application/statusPending"
+
+ const token = localStorage.getItem("accessToken")
+ const [data ,setData] = useState([])
+ const [Complete, setComplete] = useState([])
+ const [total, setTotal] = useState([])
+
+const userToken = JSON.parse(token)
+const valid_user = userToken.token
+
+ //getting total number applications
+ 
+ const getTotalNumber = async () =>{
+   await axios.get(  baseUrl  ,{
+
+    headers: {
+      'Authorization': 'Bearer ' + valid_user
+      }
+
+   })
+   .then (response => {
+    console.log(response)
+     setData(response.data)
+   })
+ }
+
+useEffect(() =>{
+  getTotalNumber()
+},[])
+
+
+//  const getStatusPending = async () => {
+
+//   await axios.get(baseUrl, {
+
+//     headers: {
+//       'Authorization': 'Bearer ' + userToken
+//       }
+
+//    })
+//    .then(response => {
+     
+//      setData(response.data.filter(gender =>{}))
+//    })
+ 
+
+
+
+// const reqOne = axios.get("http://localhost:5000/application/getall");
+// const reqTwo = axios.get("http://localhost:5000/application/statusComplete");
+
+// axios.all([reqOne, reqTwo],{
+
+//   headers: {
+//            'Authorization': 'Bearer ' + userToken
+//         }
     
+// })
 
-    return (
-      <div>
-       <Box>
-        
-      <PageHeader label="Dashboard" pageTitle="Scholarship Overview"/>
+// .then(axios.spread((...responses) => {
+//   const responseOne = responses[0]
+//   setData(responseOne.data.Applications)
+//   const responseTwo = responses
+  
+  
+// })).catch(errors => {
+//   // react on errors.
+// })
+ 
 
-      <Grid container spacing={4}>
-      
-        {displayData.map((item , index) => (
-             <Grid item xs={6} sm={4}>
-             <Card style={{ height: '100%' }} >
+  return (
+    <div>
+      <Box>
 
-             <CardContent className={classes.cardCentent} key={index}>
-          <Typography variant="body2" className={classes.cardLabel}>
+        <PageHeader label="Dashboard" pageTitle="Scholarship Overview" />
+        <Box >
 
-          {item.cardLabel}
+    
+        <Grid container spacing={4}>
 
-          </Typography>
+          <Grid item xs={6} sm={4}>
+              <Card style={{ height: '100%' }} >
 
-            <Typography variant="h5" component="h6" className={classes.cardTitle}>
+                <CardContent className={classes.cardCentent}>
+                  <Typography variant="body2" className={classes.cardLabel}>
 
-           {item.cardTitle}
+                  pending applications
 
-            </Typography>
-            <Typography variant="h6" component="h6" className={classes.applicantsNumber}>
+                  </Typography>
 
-            {item.applicantsNumber}
-            
-            </Typography>
-          </CardContent>
+                  <Typography variant="h5" component="h6" className={classes.cardTitle}>
+
+                    Applied
+
+                  </Typography>
+                  <Typography variant="h6" component="h6" className={classes.applicantsNumber}>
+
+                    {data.Applications}
+
+                  </Typography>
+                </CardContent>
 
 
-          </Card>
+              </Card>
 
-      </Grid>
-        )) }
+            </Grid>
           
-      
 
-      </Grid>
 
-     
-      <CommonGraphComponents/>
-     
 
-       </Box>
+        </Grid>
 
-       
-      
-      
+        </Box>
+        <CommonGraphComponents />
+
+
+      </Box>
 
 
 
 
-</div>
-    );
+
+
+
+
+    </div>
+  );
 }
 
 export default Dashboard
