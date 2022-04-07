@@ -9,10 +9,10 @@ const router = express.Router()
 
 
 router.post('/send_application', validateToken, preAuthorize('STUDENT') ,require('../Controllers/appController').sending_application)
-router.get('/getall',require('../Controllers/appController').getall)
+// router.get('/getall',require('../Controllers/appController').getall)
 router.get('/markComplete', require('../Controllers/appController').markComplete)
 router.get('/statusComplete', require('../Controllers/appController').statusComplete)
-router.get('/statusPending', require('../Controllers/appController').statusPending)
+router.get('/countAll', require('../Controllers/appController').countAll)
 router.post('/overrideSelection/:uuid', validateToken, preAuthorize('ADMIN') ,require('../Controllers/appController').overrideSelection)
 router.get('/allApplications', require('../Controllers/appController').allWithDetails)
 router.get('/all_applications',validateToken, preAuthorize('ADMIN'), require('../Controllers/appController').pendingApp)

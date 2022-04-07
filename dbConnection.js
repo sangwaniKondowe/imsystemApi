@@ -12,6 +12,7 @@ const connection = new Sequelize(
       min: 1,
       acquire: 30000,
     },
+  
   }
 
 );

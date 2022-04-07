@@ -10,6 +10,7 @@ const { response } = require('express');
 const e = require('express');
 
 
+
 // Getting all applications 
 
 
@@ -21,14 +22,6 @@ const e = require('express');
 //     res.status(404).send("no messages");
 //   }
 // };
-exports.getall = async (req, res) => {
-  const Applications = await Application.count();
-  if (Applications) {
-    res.status(200).json({ Applications: Applications });
-  } else {
-    res.status(404).send("no messages");
-  }
-};
 
 
 
@@ -363,36 +356,31 @@ exports.overrideSelection = async (req, res) => {
 //Get number of all complete aplications
 
 exports.statusComplete = async (req, res) => {
-  const all = await Application.count({
+  const all = await Application.findAll({
     where: {
       status: "COMPLETED",
     },
-
+    include: [
+      {
+        model: User,
+      }
+    ]
   })
   if (all) {
 
+
+    // var allCompApp = []
+    //         let allApp = all.user.
+    //         allemails.push(userEmail)
+    //         sendEmail(allemails)
+
+    
     res.send({ applications: all })
   } else {
     res.status(404).send("no approved applications");
   }
 }
 
-// Get number of all pending applications
-
-exports.statusPending = async (req, res) => {
-  const all = await Application.count({
-    where: {
-      status: "PENDING",
-    },
-
-  })
-  if (all) {
-
-    res.send({ applications: all })
-  } else {
-    res.status(404).send("no pending applications");
-  }
-}
 
 exports.pendingApp = async (req, res) => {
   const user = await Application.findAll({
@@ -465,5 +453,46 @@ exports.allWithDetails = async (req, res) => {
     res.send(users)
   } else {
     res.sendStatus(404);
+  }
+}
+
+
+exports.countAll = async (req, res) => {
+  const all = await Application.findAll({
+    attributes:["status"],
+    include: {
+      model: User,
+      attributes: [
+        "gender",
+        "yrofstudy"
+      ]
+    }
+
+  })
+  if (all) {
+     
+    const completed = all.filter(app=>app.status==='COMPLETED')
+    const pending = all.filter(app=>app.status==='PENDING')
+    const females = all.filter(app=>app.user.gender==='Female')
+    const males = all.filter(app=>app.user.gender==='Male')
+    const yr2 = all.filter(app=>app.user.yrofstudy=== 2)
+    const yr3 = all.filter(app=>app.user.yrofstudy=== 3)
+    const yr4 = all.filter(app=>app.user.yrofstudy=== 4)
+
+    const dataToReturn = {
+      totalApplicants : all.length,
+      completedApplications: completed.length,
+      pendingApplication: pending.length,
+      totalFemales: females.length,
+      totalMales: males.length,
+      secondyr: yr2.length,
+      thirdyr: yr3.length,
+      fourthyr: yr4.length
+
+    }
+      
+    res.send(dataToReturn)
+  } else {
+    res.status(404).send("no pending applications");
   }
 }
