@@ -360,22 +360,41 @@ exports.statusComplete = async (req, res) => {
     where: {
       status: "COMPLETED",
     },
-    include: [
-      {
-        model: User,
-      }
-    ]
-  })
+    include: {
+      model: User,
+      attributes: [
+        "firstname",
+        "lastname",
+        "email",
+        "regnum",
+        "gender",
+        "yrofstudy",
+        "gpa"
+      ]}
+    })
   if (all) {
 
+    const users = []
 
-    // var allCompApp = []
-    //         let allApp = all.user.
-    //         allemails.push(userEmail)
-    //         sendEmail(allemails)
+    all.forEach(element => {
+      users.push({
+        "id":element.id,
+        "appUUID": element.uuid,
+        "status": element.status,
+        "firstname": element.user.firstname,
+        "lastname": element.user.lastname,
+        "email": element.user.email,
+        "regnum": element.user.regnum,
+        "yrofstudy": element.user.yrofstudy,
+        "gender": element.user.gender,
+        "gpa": element.user.gpa,
+      }
+      );
+
+    });
 
     
-    res.send({ applications: all })
+    res.send({ applications: users })
   } else {
     res.status(404).send("no approved applications");
   }
