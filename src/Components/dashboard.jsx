@@ -15,48 +15,23 @@ function Dashboard() {
 
   const classes = useStyles();
 
-  const displayData = [
-    {
-      cardLabel: "",
-      cardTitle: " Applied",
-      applicantsNumber:"9"
 
-
-
-    },
-    {
-      cardLabel: "",
-      cardTitle: " Selected",
-      applicantsNumber: " 70 "
-
-
-
-    },
-    {
-      cardLabel: "",
-      cardTitle: "Not Selected",
-      applicantsNumber: " 30 "
-
-
-
-    }
-  ]
- const baseUrl = "http://localhost:5000/application/getall"
+  
  
- const baseTotalgUrl = "http://localhost:5000/application/statusPending"
+ 
+ const baseDataUrl = "http://localhost:5000/application/countAll"
 
  const token = localStorage.getItem("accessToken")
  const [data ,setData] = useState([])
- const [Complete, setComplete] = useState([])
- const [total, setTotal] = useState([])
+ 
 
 const userToken = JSON.parse(token)
 const valid_user = userToken.token
 
- //getting total number applications
+
  
  const getTotalNumber = async () =>{
-   await axios.get(  baseUrl  ,{
+   await axios.get(   baseDataUrl   ,{
 
     headers: {
       'Authorization': 'Bearer ' + valid_user
@@ -65,7 +40,8 @@ const valid_user = userToken.token
    })
    .then (response => {
     console.log(response)
-     setData(response.data)
+    setData(response.data)
+     
    })
  }
 
@@ -74,43 +50,11 @@ useEffect(() =>{
 },[])
 
 
-//  const getStatusPending = async () => {
-
-//   await axios.get(baseUrl, {
-
-//     headers: {
-//       'Authorization': 'Bearer ' + userToken
-//       }
-
-//    })
-//    .then(response => {
-     
-//      setData(response.data.filter(gender =>{}))
-//    })
- 
 
 
 
-// const reqOne = axios.get("http://localhost:5000/application/getall");
-// const reqTwo = axios.get("http://localhost:5000/application/statusComplete");
 
-// axios.all([reqOne, reqTwo],{
 
-//   headers: {
-//            'Authorization': 'Bearer ' + userToken
-//         }
-    
-// })
-
-// .then(axios.spread((...responses) => {
-//   const responseOne = responses[0]
-//   setData(responseOne.data.Applications)
-//   const responseTwo = responses
-  
-  
-// })).catch(errors => {
-//   // react on errors.
-// })
  
 
   return (
@@ -129,18 +73,14 @@ useEffect(() =>{
                 <CardContent className={classes.cardCentent}>
                   <Typography variant="body2" className={classes.cardLabel}>
 
-                  pending applications
+                  Total applications
 
                   </Typography>
 
-                  <Typography variant="h5" component="h6" className={classes.cardTitle}>
-
-                    Applied
-
-                  </Typography>
+                 
                   <Typography variant="h6" component="h6" className={classes.applicantsNumber}>
 
-                    {data.Applications}
+                  <h1>{data.totalApplicants}</h1>
 
                   </Typography>
                 </CardContent>
@@ -149,14 +89,66 @@ useEffect(() =>{
               </Card>
 
             </Grid>
+
+
+            <Grid item xs={6} sm={4}>
+              <Card style={{ height: '100%' }} >
+
+                <CardContent className={classes.cardCentent}>
+                  <Typography variant="body2" className={classes.cardLabel}>
+
+                   pending applications
+
+                  </Typography>
+
+               
+                  <Typography variant="h6" component="h6" className={classes.applicantsNumber}>
+
+                  
+                   <h1>{data.pendingApplication}</h1>
+                  </Typography>
+                </CardContent>
+
+
+              </Card>
+
+            </Grid>
+
+            <Grid item xs={6} sm={4}>
+              <Card style={{ height: '100%' }} >
+
+                <CardContent className={classes.cardCentent}>
+                  <Typography variant="body2" className={classes.cardLabel}>
+
+                  Completed applications
+
+                  </Typography>
+
+                
+                  <Typography variant="h6" component="h6" className={classes.applicantsNumber}>
+
+                  <h1>{data.completedApplications}</h1>
+
+                  </Typography>
+                </CardContent>
+
+
+              </Card>
+
+            </Grid>
+
+
+            
           
 
 
 
         </Grid>
 
+        
+
         </Box>
-        <CommonGraphComponents />
+        
 
 
       </Box>

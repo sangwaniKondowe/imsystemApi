@@ -1,9 +1,7 @@
 
 import React from 'react'
 import {Box, CardContent, Grid, Typography,Card} from '@material-ui/core'
-import BarGraph from '../Graphs/BarGraph'
 import {useStyles} from '../BodyStyles'
-import ChartGraph from '../Graphs/ChartGraph'
 import Beneficiaries from '../Beneficiaries'
 
 function CommonGraphComponents() {
@@ -19,7 +17,7 @@ function CommonGraphComponents() {
                              Scholarship Overview
 
                          </Typography>
-                         <Beneficiaries/>
+                         
                      </CardContent>
                  </Card>
                  </Grid>
@@ -31,7 +29,7 @@ function CommonGraphComponents() {
                              Scholarship Overview
 
                          </Typography>
-                         <ChartGraph/>
+                        
                      </CardContent>
                  </Card>
                  </Grid>

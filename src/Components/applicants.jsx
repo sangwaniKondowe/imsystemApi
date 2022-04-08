@@ -7,6 +7,7 @@ import {useStyles} from './BodyStyles'
 
 
 
+
 import {Table,
     TableBody,
     TableCell,
@@ -14,6 +15,7 @@ import {Table,
     TableHead,
     TableRowPaper,TableRow} from '@material-ui/core';
 import axios from 'axios'
+import PendingApplications from './PendingApplications'
 
 
 
@@ -69,7 +71,7 @@ setNumberFemale(e.target.value)
 
         
        <Box>
-        <PageHeader pageTitle="All Beneficiaries "/>
+        <PageHeader pageTitle="All Applicants"/>
         {/* Selection form  */}
         <form onSubmit={handleSubmit}>
           <Grid className={classes.selectionForm}>
@@ -106,39 +108,12 @@ setNumberFemale(e.target.value)
         onClick={ handleSubmit}
          color = "primary"variant='contained'>Select</Button>
 
+
+         <PendingApplications/>
+
     </Box>
 
-<TableContainer className={classes.tableContainer} >
-<Table className={classes.table} aria-label="simple table">
-  <TableHead >
-    <TableRow>
-      <TableCell className={classes.tableHeard}>First Name</TableCell>
-      <TableCell className={classes.tableHeard} >Last Name</TableCell>
-      <TableCell className={classes.tableHeard}>Gender</TableCell>
-      <TableCell className={classes.tableHeard}>Email</TableCell>
-      <TableCell  className={classes.tableHeard}>R.Number</TableCell>
-      <TableCell className={classes.tableHeard} >Year Of Study</TableCell>
-      <TableCell  className={classes.tableHeard}>GPA</TableCell>
-    </TableRow>
-  </TableHead>
-  <TableBody>
-    {data.map((row) => (
-      <TableRow key={row.id}>
-        
-        <TableCell >{row.firstname}</TableCell>
-        <TableCell >{row.lastname}</TableCell>
-        <TableCell >{row.gender}</TableCell>
-        <TableCell >{row.email}</TableCell>
-        <TableCell >{row.regnum}</TableCell>
-        <TableCell >{row.yrofstudy}</TableCell>
-        <TableCell >{row.gpa}</TableCell>
-        
-      </TableRow>
-    ))}
-  </TableBody>
-  
-</Table>
-</TableContainer>
+
 </div>
 
     )

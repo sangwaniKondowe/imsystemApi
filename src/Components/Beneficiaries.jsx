@@ -1,6 +1,6 @@
 import React ,{useEffect, useState}from 'react'
 import {PageHeader} from './Common/CommonComponents'
-import {Box} from '@material-ui/core'
+import {Box, Button} from '@material-ui/core'
 import {Table,
     TableBody,
     TableCell,
@@ -18,7 +18,7 @@ function Beneficiaries() {
     const userToken = JSON.parse(token)
     const valid_token = userToken.token
     const [data, setData] = useState([])
-    const baseUrl = "http://localhost:5000/application/all_Applications"
+    const baseUrl = "http://localhost:5000/application/statusComplete"
 
     const getApplicants = () => {
         axios.get(baseUrl,{
@@ -29,7 +29,8 @@ function Beneficiaries() {
 
         })
         .then(res => {
-            setData(res.data)
+          console.log(res)
+            setData(res.data.applications)
         })
     }
    useEffect(() =>{
@@ -37,7 +38,7 @@ function Beneficiaries() {
    },[])
     return (
    <Box>
-        <PageHeader pageTitle="All Applicants"/>
+        <PageHeader pageTitle="All Beneficiaries"/>
 
         <TableContainer className={classes.tableContainer} >
 <Table className={classes.table} aria-label="simple table">
@@ -50,6 +51,8 @@ function Beneficiaries() {
       <TableCell  className={classes.tableHeard}>R.Number</TableCell>
       <TableCell className={classes.tableHeard} >Year Of Study</TableCell>
       <TableCell  className={classes.tableHeard}>GPA</TableCell>
+      <TableCell  className={classes.tableHeard}>Status</TableCell>
+      
     </TableRow>
   </TableHead>
   <TableBody>
@@ -63,6 +66,8 @@ function Beneficiaries() {
         <TableCell >{row.regnum}</TableCell>
         <TableCell >{row.yrofstudy}</TableCell>
         <TableCell >{row.gpa}</TableCell>
+        <TableCell >{row.status}</TableCell>
+        
         
       </TableRow>
     ))}

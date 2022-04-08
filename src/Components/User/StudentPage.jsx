@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import Popup from 'reactjs-popup';
 import {AppBar,Toolbar,IconButton,Typography, Button, Paper, Grid,Box} from '@material-ui/core'
 
-
+import { useNavigate } from 'react-router-dom';
 function StudentPage() {
   
   const paperStyle={padding :20,height:'70vh',width:1000, margin:"20px auto"}
@@ -14,11 +14,13 @@ function StudentPage() {
 
   const [data, setData] = useState([])
   const token = localStorage.getItem("accessToken")
-  
+  const navigate = useNavigate()
   const userToken = JSON.parse(token)
    const valid_token = userToken.token
   const classes = useStyles()
-  
+  const LogOut = () =>{
+    navigate("/login")
+  }
 
   const baseSendUrl = "http://localhost:5000/application/send_application"
 
@@ -70,7 +72,7 @@ function StudentPage() {
           </Typography>
           <Grid container justifyContent='flex-end' direction='row'>
           <Button
-          
+          onClick={LogOut}
           
           color='primary'
           variant="contained"
@@ -91,7 +93,7 @@ function StudentPage() {
                 </Grid>
 
                   <Typography>
-                  To recognize and assist 1st, 2nd or 3rd year students 
+                  To recognize and assist 2nd , 3rd or 4th  year students 
                   in the Computer Science Programme at Chancellor College
                   who are contributing to improving the lives of other
                   Malawians, while successfully completing their courses.
