@@ -66,26 +66,7 @@ function PendingApplications() {
   };
 
   const handleClose = () => {
-
-    
-
-    const override = "http://localhost:5000/beneficiary/overrideSelection/uuid?=${uuid}"
-
-    var uuid = this.props.match.params.uuid;
-    
-    axios.post(override,{
-
-      headers: {
-        'Authorization': 'Bearer ' + valid_token
-        }
-
-    }).then(res =>{
-      console.log(res)
-    })
-
-    
-
-    setOpen(false);
+  setOpen(false);
   }
 
   return (
