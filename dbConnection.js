@@ -1,6 +1,6 @@
 const { Sequelize } = require("sequelize");
 const connection = new Sequelize(
-  "scholarApi",
+  "api",
   "postgres",
   "admin",
   {
@@ -17,6 +17,6 @@ const connection = new Sequelize(
 
 );
 
-//connection.sync({force: true});
+connection.sync({force: true});
 
 module.exports = connection;
