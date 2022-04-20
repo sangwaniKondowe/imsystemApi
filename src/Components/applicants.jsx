@@ -19,9 +19,8 @@ import PendingApplications from './PendingApplications'
 
 
 
-//form default value
 
-
+// this function recieves applicants data from api which the admin will use it for selection
 
 function Applicants() {
     const classes = useStyles();
@@ -34,11 +33,11 @@ function Applicants() {
       
     
   
-    // form control
+    // this function handle submission of the creteria which admin will use for the seletion
     const handleSubmit = (event) => {
       event.preventDefault();
 
-    
+    //endpoint for the selection process
     const getBeneUrl = "http://localhost:5000/application/markComplete?females="+numberFemale+"&males="+numberMale
      
     axios.get(getBeneUrl,{
@@ -74,7 +73,8 @@ setNumberFemale(e.target.value)
         <PageHeader pageTitle="All Applicants"/>
         {/* Selection form  */}
         <form onSubmit={handleSubmit}>
-          <Grid className={classes.selectionForm}>
+          
+          <Grid container className={classes.selectionForm} direction="row" spacing={3}>
             <Grid item>
               <TextField 
               id = "male-input"
@@ -108,7 +108,7 @@ setNumberFemale(e.target.value)
         onClick={ handleSubmit}
          color = "primary"variant='contained'>Select</Button>
 
-
+{/* table showing all applicants data  */}
          <PendingApplications/>
 
     </Box>

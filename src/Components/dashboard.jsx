@@ -40,7 +40,7 @@ const valid_user = userToken.token
    })
    .then (response => {
     console.log(response)
-    setData(response.data)
+    
      
    })
  }
@@ -139,7 +139,7 @@ useEffect(() =>{
 
 
             
-          
+           
 
 
 

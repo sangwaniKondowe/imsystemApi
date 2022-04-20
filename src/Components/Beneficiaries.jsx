@@ -9,7 +9,8 @@ import {Table,
     TableRowPaper,TableRow} from '@material-ui/core';
 import {useStyles} from './BodyStyles'
 import axios from 'axios';
-
+// this function is getting shortlisted applicants from the api and display them 
+// only shortlisted students and there details will be shown here
 
 function Beneficiaries() {
 
@@ -51,11 +52,12 @@ function Beneficiaries() {
       <TableCell  className={classes.tableHeard}>R.Number</TableCell>
       <TableCell className={classes.tableHeard} >Year Of Study</TableCell>
       <TableCell  className={classes.tableHeard}>GPA</TableCell>
-      <TableCell  className={classes.tableHeard}>Status</TableCell>
+    
       
     </TableRow>
   </TableHead>
   <TableBody>
+    {/* the table showing students details */}
     {data.map((row) => (
       <TableRow key={row.id}>
         
@@ -66,7 +68,7 @@ function Beneficiaries() {
         <TableCell >{row.regnum}</TableCell>
         <TableCell >{row.yrofstudy}</TableCell>
         <TableCell >{row.gpa}</TableCell>
-        <TableCell >{row.status}</TableCell>
+        {/* <TableCell >{row.status}</TableCell> */}
         
         
       </TableRow>

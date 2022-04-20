@@ -21,11 +21,7 @@ function Routing() {
       <Routes>
         
           <Route path="/login" element={<Login />} />
-      
-          
-    ?
-
-          <Route path="/" exact element={<InnerContent />}>
+            <Route path="/" exact element={<InnerContent />}>
             <Route path="/" exact element={< Navigate replace to="dashboard" />} />
             <Route path='dashboard' exact element={<Dashboard />} />
             <Route path='applicants' exact element={<Applicants />} />

@@ -3,7 +3,7 @@ import './App.css';
 import React from 'react';
 
 import Login from './Components/Login';
-import {Routes, Route,Navigate} from 'react-router-dom'
+import { BrowserRouter as Router, Route,Navigate} from 'react-router-dom'
 import { useStyles } from './Components/BodyStyles';
 import Navbar from './Components/Navbar';
 import InnerContent from './Components/InnerContent';
@@ -21,8 +21,10 @@ function App() {
    
 return( 
     <div>
-   
+    <Router>
     <Routing/>
+    </Router>
+   
   
     </div>
 
