@@ -29,7 +29,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "generate-docs": "jsdoc -c C:/Users/Joseph Mkonda/Desktop/imsystemApi/doc.json"
+    "generate-docs": "jsdoc -c Desktop/doc.json"
   },
   "eslintConfig": {
     "extends": [
@@ -41,5 +41,8 @@
     ">0.2%",
     "not dead",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "jsdoc": "^3.6.10"
+  }
 }

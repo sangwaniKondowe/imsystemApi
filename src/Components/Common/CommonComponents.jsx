@@ -3,6 +3,12 @@
 import React from 'react'
 import {Grid, Typography} from '@material-ui/core'
 import { useStyles } from '../BodyStyles';
+/**
+ * PageHeader is a function that takes in two props, label and pageTitle, and returns a grid container
+ * with two grid items. The first grid item is a Typography component that displays the label prop, and
+ * the second grid item is a Typography component that displays the pageTitle prop.
+ * @returns A React component
+ */
 
 export const PageHeader = ({label,pageTitle}) => {
 
