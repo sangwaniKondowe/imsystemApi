@@ -26,28 +26,22 @@ import axios from 'axios'
 
 function PendingApplications() {
 
-    const token = localStorage.getItem("accessToken")
-    const userToken = JSON.parse(token)
-    const valid_token = userToken.token
       
     const classes = useStyles();
     const [data , setData] = useState([])
 
-    const getPending = "http://localhost:5000/application/all_Applications"
+    const getPending = "http://localhost:5000/application/allApplications"
+    /**
+     * It gets the data from the API and sets the data to the state.
+     */
     const getPendingApplications = () => {
 
-        axios.get(getPending,{
-
-      
-            headers: {
-              'Authorization': 'Bearer ' + valid_token
-              }
-          })
-      
+        axios.get(getPending)
           .then(response => {
             
-            setData(response.data)
+          
             console.log(response)
+            setData(response.data)
             
           })
          
@@ -55,22 +49,12 @@ function PendingApplications() {
   useEffect(() =>{
   getPendingApplications()
   },[])
-  const [open, setOpen] = React.useState(false);
+  
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose1 = () => {
-    setOpen(false);
-  };
-
-  const handleClose = () => {
-  setOpen(false);
-  }
 
   return (
     <div>
+    {/* Creating a table with the data that is fetched from the API. */}
     <TableContainer className={classes.tableContainer} >
 <Table className={classes.table} aria-label="simple table">
   <TableHead >
@@ -82,7 +66,7 @@ function PendingApplications() {
       <TableCell  className={classes.tableHeard}>R.Number</TableCell>
       <TableCell className={classes.tableHeard} >Year Of Study</TableCell>
       <TableCell  className={classes.tableHeard}>GPA</TableCell>
-      <TableCell  className={classes.tableHeard}>Action</TableCell>
+      
     </TableRow>
   </TableHead>
   <TableBody>
@@ -99,25 +83,9 @@ function PendingApplications() {
         <TableCell >
 
 
-        <Button variant="outlined" onClick={handleClickOpen}>
-        Add
-      </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Are you sure?"}
-        </DialogTitle>
-        <DialogActions>
-          <Button onClick={handleClose1}>No</Button>
-          <Button onClick={handleClose} autoFocus>
-            Yes
-          </Button>
-        </DialogActions>
-      </Dialog>
+        
+    
+        
 
         </TableCell>
         

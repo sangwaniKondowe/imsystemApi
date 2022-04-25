@@ -98,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
 
   wrapper: {
 
-    padding: theme.spacing(8, 6, 4, 12)
+    padding: theme.spacing(1, 2, 2, 2)
 
   },
   navlinks: {

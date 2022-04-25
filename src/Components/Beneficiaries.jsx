@@ -15,23 +15,19 @@ import axios from 'axios';
 function Beneficiaries() {
 
     const classes = useStyles();
-    const token = localStorage.getItem("accessToken")
-    const userToken = JSON.parse(token)
-    const valid_token = userToken.token
+    
     const [data, setData] = useState([])
     const baseUrl = "http://localhost:5000/application/statusComplete"
 
+    /**
+     * When the component mounts, get the data from the API and set the state to the data.
+     */
     const getApplicants = () => {
-        axios.get(baseUrl,{
-
-            headers: {
-                'Authorization': 'Bearer ' + valid_token
-                }
-
-        })
+        axios.get(baseUrl)
         .then(res => {
           console.log(res)
-            setData(res.data.applications)
+          setData(res.data.applications)
+            
         })
     }
    useEffect(() =>{
@@ -39,7 +35,7 @@ function Beneficiaries() {
    },[])
     return (
    <Box>
-        <PageHeader pageTitle="All Beneficiaries"/>
+        <PageHeader pageTitle="All Shortlisted"/>
 
         <TableContainer className={classes.tableContainer} >
 <Table className={classes.table} aria-label="simple table">
@@ -65,14 +61,14 @@ function Beneficiaries() {
         <TableCell >{row.lastname}</TableCell>
         <TableCell >{row.gender}</TableCell>
         <TableCell >{row.email}</TableCell>
-        <TableCell >{row.regnum}</TableCell>
+        <TableCell >{row.regNum}</TableCell>
         <TableCell >{row.yrofstudy}</TableCell>
         <TableCell >{row.gpa}</TableCell>
-        {/* <TableCell >{row.status}</TableCell> */}
+        
         
         
       </TableRow>
-    ))}
+    ))} 
   </TableBody>
   
 </Table>

@@ -15,6 +15,10 @@ import Dashboard from './Components/Dashboard';
 import {Box} from '@material-ui/core'
 
 import Routing from './Components/Routing';
+/**
+ * The App function returns a div that contains a Router that contains a Routing component.
+ * @returns A div with a Router and a Routing component.
+ */
 
 function App() {
     const classes= useStyles()

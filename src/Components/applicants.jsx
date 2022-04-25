@@ -4,10 +4,6 @@ import {PageHeader} from './Common/CommonComponents'
 import { Button,TextField,Grid} from '@material-ui/core'
 import {Box} from '@material-ui/core'
 import {useStyles} from './BodyStyles'
-
-
-
-
 import {Table,
     TableBody,
     TableCell,
@@ -27,30 +23,27 @@ function Applicants() {
     const [data , setData] = useState([])
     const [numberMale, setNumberMales] = useState(0)
     const [numberFemale, setNumberFemale] = useState(0)
-    const token = localStorage.getItem("accessToken")
-    const userToken = JSON.parse(token)
-    const valid_token = userToken.token
-      
+    
     
   
-    // this function handle submission of the creteria which admin will use for the seletion
+    /**
+     * Used to get the data from the api and display it in the table.
+     */
+    
     const handleSubmit = (event) => {
       event.preventDefault();
 
-    //endpoint for the selection process
+    /* A function that is called when the admin clicks the select button. It is used to get the data
+    from the api and display it in the table. */
+    
     const getBeneUrl = "http://localhost:5000/application/markComplete?females="+numberFemale+"&males="+numberMale
      
-    axios.get(getBeneUrl,{
-
-      
-      headers: {
-        'Authorization': 'Bearer ' + valid_token
-        }
-    })
+    axios.get(getBeneUrl)
+    
 
     .then(response => {
       
-      setData(response.data.complete)
+      setData(response.data.ele)
       console.log(response)
       
     })
@@ -71,7 +64,9 @@ setNumberFemale(e.target.value)
         
        <Box>
         <PageHeader pageTitle="All Applicants"/>
-        {/* Selection form  */}
+        
+       {/* A form that is used to get the number of males and females that the admin wants to select. */}
+        
         <form onSubmit={handleSubmit}>
           
           <Grid container className={classes.selectionForm} direction="row" spacing={3}>

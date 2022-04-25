@@ -5,6 +5,7 @@ import { PageHeader } from './Common/CommonComponents'
 
 import CommonGraphComponents from './Common/CommonGraphComponents';
 import { useNavigate } from 'react-router-dom';
+import { Bar} from 'react-chartjs-2';
 
 import axios from 'axios';
 
@@ -21,48 +22,45 @@ function Dashboard() {
  
  const baseDataUrl = "http://localhost:5000/application/countAll"
 
- const token = localStorage.getItem("accessToken")
+ 
  const [data ,setData] = useState([])
  
-
-const userToken = JSON.parse(token)
-const valid_user = userToken.token
-
-
+/**
+ * I'm using the useEffect hook to call the countingAppications function, which is an async function
+ * that uses axios to get data from an API. 
+ * 
+ * The data is then set to the state variable "data" using the setData function. 
+ * 
  
- const getTotalNumber = async () =>{
-   await axios.get(   baseDataUrl   ,{
+ */
 
-    headers: {
-      'Authorization': 'Bearer ' + valid_user
-      }
+const countingAppications= async () => {
+  await axios.get(baseDataUrl)
+  .then(res => {
+    console.log(res)
+    setData(res.data)
 
-   })
-   .then (response => {
-    console.log(response)
     
-     
-   })
- }
 
-useEffect(() =>{
-  getTotalNumber()
+  })
+  .catch(err =>{
+    console.log(err)
+  })
+}
+
+
+useEffect(() => {
+  countingAppications()
 },[])
 
 
 
-
-
-
-
- 
-
   return (
     <div>
-      <Box>
+    
 
         <PageHeader label="Dashboard" pageTitle="Scholarship Overview" />
-        <Box >
+        
 
     
         <Grid container spacing={4}>
@@ -80,7 +78,7 @@ useEffect(() =>{
                  
                   <Typography variant="h6" component="h6" className={classes.applicantsNumber}>
 
-                  <h1>{data.totalApplicants}</h1>
+                  <h1 style={{color:'green'}}>{data.totalApplications}</h1>
 
                   </Typography>
                 </CardContent>
@@ -97,7 +95,7 @@ useEffect(() =>{
                 <CardContent className={classes.cardCentent}>
                   <Typography variant="body2" className={classes.cardLabel}>
 
-                   pending applications
+                   total female applicants
 
                   </Typography>
 
@@ -105,7 +103,7 @@ useEffect(() =>{
                   <Typography variant="h6" component="h6" className={classes.applicantsNumber}>
 
                   
-                   <h1>{data.pendingApplication}</h1>
+                <h1 style={{color:'blue'}}>{data.totalFemales}</h1>
                   </Typography>
                 </CardContent>
 
@@ -120,14 +118,14 @@ useEffect(() =>{
                 <CardContent className={classes.cardCentent}>
                   <Typography variant="body2" className={classes.cardLabel}>
 
-                  Completed applications
+                  total male applicants
 
                   </Typography>
 
                 
                   <Typography variant="h6" component="h6" className={classes.applicantsNumber}>
 
-                  <h1>{data.completedApplications}</h1>
+                  <h1 style={{color:'red'}}>{data.totalMales}</h1>
 
                   </Typography>
                 </CardContent>
@@ -138,23 +136,9 @@ useEffect(() =>{
             </Grid>
 
 
-            
-           
-
-
-
-        </Grid>
-
+            </Grid>
         
-
-        </Box>
-        
-
-
-      </Box>
-
-
-
+              
 
 
 
@@ -162,6 +146,6 @@ useEffect(() =>{
 
     </div>
   );
-}
 
+  }
 export default Dashboard

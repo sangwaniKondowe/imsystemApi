@@ -10,8 +10,13 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import UserInnerContent from './UserOutlet'
 import Login from './Login'
 import PermissionDenied from './PermisionDenied'
-import ProtectedRouting from './ProtectedRoutes'
+
 import PublicRoutes from './PublicRoute'
+/**
+ * It's a function that returns a div that contains a Routes component that contains a Route component
+
+ * @returns The return statement is returning the JSX code that is being rendered.
+ */
 
 function Routing() {
   const classes = useStyles()

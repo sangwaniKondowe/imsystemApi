@@ -11,17 +11,6 @@ import {
   Route} from 'react-router-dom'
 import AdminLogin from './Components/Login';
 
-// const Routing = () => {
-  
-//   <Routes>
-//     <Route exact path = "/" element ={<App/>}/> 
-//     <Route  exact path = "/student" element={<StudentLogin/>}/>
-//   </Routes>
-
-  
-  
-// }
- 
 
 
 ReactDOM.render(

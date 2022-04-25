@@ -23,8 +23,12 @@ function AdminLogin() {
 
 
  
-  // handling submission on the form
+  
 
+  /**
+   * I'm trying to set the token to local storage and then navigate to the home page if the token is
+   * equal to the token in the local storage.
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = { email: email, password: password }
@@ -32,30 +36,25 @@ function AdminLogin() {
 
     axios.post('http://localhost:5000/login/login', data)
       .then(response => {
-        
+        console.log(response)
         if (response.data.err) {
           alert(response.data.err)
         } else {
-          localStorage.setItem("accessToken",JSON.stringify({
+          localStorage.setItem("token",JSON.stringify({
             token: response.data.token
+          
            })
+          
            )
+           const token = response.data.token
+           if(token === token){
+            navigate("/")
+           }
           localStorage.setItem("role", response.data.role)
           const role = response.data.role;
          
-          if (role === "ADMIN") {
 
-            localStorage.setItem("role", role)
-            
-            navigate("/")
-
-          }
-          if (role === "STUDENT") {
-            localStorage.setItem("role", role)
-            navigate("/student")
-          }
-
-        }
+      }
       })
       .catch(err => {
         console.log(err)
@@ -65,6 +64,7 @@ function AdminLogin() {
   }
   return (
     <div>
+      {/* A form that contains the login form.  */}
       <form >
 
 

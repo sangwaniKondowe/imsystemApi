@@ -4,6 +4,11 @@ import {Navigate, Outlet,useLocation} from "react-router-dom"
 import { useEffect } from "react";
 
 
+/**
+ * If the token is valid, the user is redirected to the home page, otherwise, the user is redirected to
+ * the login page.
+ * @returns The function ProtectedRouting is being returned.
+ */
 const ProtectedRouting = () => {
     
     
@@ -27,19 +32,6 @@ const ProtectedRouting = () => {
         return <Navigate to= "/log"/>
     }
 
-    // return isAuth? <Navigate to ="/login"/>:<Outlet/>
-
-    // if (valid_token != null){
-    //     return <Navigate to = "/"/>
-    // }
-
-//     else {
-     
-//    return <Navigate to = "/login"/>
-
-//     }
-        
-// return valid_token ? <Outlet/>: <Navigate to="/login"/>
 
 }
 export default ProtectedRouting
