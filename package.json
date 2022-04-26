@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.26.1",
     "chart.js": "^3.7.1",
+    "eslint-config-react-app": "^7.0.1",
     "ra-data-simple-rest": "^3.19.10",
     "react": "^17.0.2",
     "react-admin": "^3.19.10",
@@ -29,7 +30,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "generate-docs": "jsdoc -c Desktop/doc.json"
+    "generate-docs": "jsdoc -c C:/Users/BSC_COM_06_17/Documents/frontend/imsystemApi/doc.json"
   },
   "eslintConfig": {
     "extends": [
