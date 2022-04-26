@@ -9,6 +9,9 @@ import { Bar} from 'react-chartjs-2';
 import DataAnalytics from './DataAnalytics'
 import axios from 'axios';
 
+import History from './ShortlistedHistory';
+
+
 function Dashboard() {
 
   const navigate = useNavigate()
@@ -103,7 +106,7 @@ useEffect(() => {
                   <Typography variant="h6" component="h6" className={classes.applicantsNumber}>
 
                   
-                <h1 style={{color:'blue'}}>{data.totalFemales}</h1>
+               
                   </Typography>
                 </CardContent>
 
@@ -127,6 +130,35 @@ useEffect(() => {
 
                   <h1 style={{color:'red'}}>{data.totalMales}</h1>
 
+                  
+
+                  </Typography>
+                </CardContent>
+
+
+              </Card>
+
+            </Grid>
+
+
+
+            <Grid item xs={8} sm={4}>
+              <Card style={{ height: '100%' }} >
+
+                <CardContent className={classes.cardCentent}>
+                  <Typography variant="body2" className={classes.cardLabel}>
+
+                  
+
+                  </Typography>
+
+                
+                  <Typography variant="h6" component="h6" className={classes.applicantsNumber}>
+
+                
+                <History/>
+                  
+
                   </Typography>
                 </CardContent>
 
@@ -138,9 +170,9 @@ useEffect(() => {
 
             </Grid>
         
-            <DataAnalytics/>  
+          
 
-
+            
 
 
 
