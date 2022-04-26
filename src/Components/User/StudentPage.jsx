@@ -65,13 +65,13 @@ const handleChange = e => {
 
 /* A function that is called when the form is submitted. It prevents the default action of the form
 and then sends the data to the server. */
-const submithandler = event => {
-  event.preventDefault()
+const submithandler = e => {
+  e.preventDefault()
   axios.post("http://localhost:5000/application/send_application", data)
   .then(response => {
     console.log(response)
     setData(response.data)
-    alert(response.data)
+    
 
   })
 }
@@ -110,7 +110,7 @@ const submithandler = event => {
               name = "firstname"
               label = "Enter First Name"
               fullWidth
-              required
+              
               value={data.firstname}
               onChange={handleChange}
               
@@ -125,7 +125,7 @@ const submithandler = event => {
               label = "Enter Last Name"
               type = "text"
               fullWidth
-              required
+              
               value={data.lastname}
               onChange={handleChange}
               

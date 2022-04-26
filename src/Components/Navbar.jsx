@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import Applicants from './Applicants'
 import Beneficiaries from './Beneficiaries'
 import Dashboard from './Dashboard';
+import ListestedBeneficiaries from './ListestedBeneficiaries';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -93,12 +94,12 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(4),
+    padding: theme.spacing(1),
   },
 
   wrapper: {
 
-    padding: theme.spacing(1, 2, 2, 2)
+  
 
   },
   navlinks: {
@@ -157,6 +158,11 @@ function Navbar() {
     text: "Applications",
     icon: <PersonIcon />,
     onClick: () => navigate("applicants")
+  },
+  {
+    text: "ShortListed",
+    icon: <PeopleIcon />,
+    onClick: () => navigate("/shortlisted")
   },
   {
     text: "Beneficiaries",

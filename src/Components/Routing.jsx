@@ -5,6 +5,7 @@ import Dashboard from './Dashboard'
 import Applicants from './Applicants'
 import InnerContent from './InnerContent'
 import Beneficiaries from './Beneficiaries'
+import ListestedBeneficiaries from './ListestedBeneficiaries'
 import { useStyles } from './BodyStyles'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import UserInnerContent from './UserOutlet'
@@ -30,7 +31,8 @@ function Routing() {
             <Route path="/" exact element={< Navigate replace to="dashboard" />} />
             <Route path='dashboard' exact element={<Dashboard />} />
             <Route path='applicants' exact element={<Applicants />} />
-            <Route path='beneficiaries' exact element={<Beneficiaries />} />
+            <Route path='shortlisted' exact element={<Beneficiaries />} />
+            <Route path='beneficiaries' exact element={<ListestedBeneficiaries />} />
           </Route>
           <Route path='/student' exact element={<UserInnerContent />} />
 

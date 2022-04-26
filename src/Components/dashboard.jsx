@@ -6,7 +6,7 @@ import { PageHeader } from './Common/CommonComponents'
 import CommonGraphComponents from './Common/CommonGraphComponents';
 import { useNavigate } from 'react-router-dom';
 import { Bar} from 'react-chartjs-2';
-
+import DataAnalytics from './DataAnalytics'
 import axios from 'axios';
 
 function Dashboard() {
@@ -138,7 +138,7 @@ useEffect(() => {
 
             </Grid>
         
-              
+            <DataAnalytics/>  
 
 
 
