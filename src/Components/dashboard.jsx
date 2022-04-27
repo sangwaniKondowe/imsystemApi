@@ -142,7 +142,7 @@ useEffect(() => {
 
 
 
-            <Grid item xs={8} sm={4}>
+            <Grid item xs={8} sm={8}>
               <Card style={{ height: '100%' }} >
 
                 <CardContent className={classes.cardCentent}>

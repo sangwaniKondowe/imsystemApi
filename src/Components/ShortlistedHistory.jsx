@@ -8,30 +8,67 @@ import {Table,
     TableHead,
     TextField,
     TableRowPaper,TableRow,Grid} from '@material-ui/core';
-import {useStyles} from './BodyStyles'
+import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
 
+import {useStyles} from './BodyStyles'
+import axios from 'axios'
 function History() {
   const classes = useStyles();
+
+ 
+
+  const [data, setData] = useState([])
+
+
+ const year = (new Date()).getFullYear();
+  var years= []
+    for(var i=2019; i<=year; i++) {
+        years.push(i)
+    }
+
+    const [selected, setSelected] = useState("2022");
+    const handleSubmit = (e) => {
+      e.preventDefault();
+        // console.log(selected)
+      
+    const Url = "http://localhost:5000/application/getPrev?year="+ selected
+    axios.get(Url)
+    .then(response => {
+      
+        console.log(response)
+    
+     setData(response.data)
+    
+    })
+    }
+
+    const  handleChange = (event) => {
+      setSelected(event.target.value);
+    }
  
   return (
     <div>
+<Box>
 
-<form>
 
-<Grid container className={classes.selectionForm} direction="row" spacing={3}>
-       <Grid item>
-         <TextField 
-         id = "reg-input"
-         name = "regNum"
-         label = "Enter Registration number"
-         type = "text"
-       
-          
-         />
-       </Grid>
-       </Grid>
-</form>
-   
+<FormControl>
+      <InputLabel htmlFor="agent-simple">Year</InputLabel>
+      <Select
+        value={selected}
+        onChange={handleChange}
+        inputProps={{
+          name: "year",
+          id: "year-simple"
+        }}
+        onClick={handleSubmit}
+      >
+        {years.map((year, index) => {
+          return <MenuItem key={index} value={year}>{year}</MenuItem>;
+        })}
+      </Select>
+    </FormControl>
+     <h1 style={{color:'red'}}>{data.totalShortlisted}helloo</h1>
+    </Box>
    <Box>
         <PageHeader pageTitle="previous Shortlisted"/>
 
@@ -52,7 +89,7 @@ function History() {
   </TableHead>
   <TableBody>
     {/* the table showing students details */}
-    {/* {data.map((row) => (
+    {data.map((row) => (
       <TableRow key={row.id}>
         
         <TableCell >{row.firstname}</TableCell>
@@ -66,7 +103,7 @@ function History() {
         
         
       </TableRow>
-    ))}  */}
+    ))} 
   </TableBody>
   
 </Table>
