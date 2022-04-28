@@ -11,6 +11,11 @@ import {useStyles} from './BodyStyles'
 import axios from 'axios';
 // this function is getting shortlisted applicants from the api and display them 
 // only shortlisted students and there details will be shown here
+/**
+ * It's a function that fetches data from an API and displays it in a table.
+ * I have also tried to console.log the data
+ * @returns The data is being returned as an array of objects.
+ */
 
 function Beneficiaries() {
 

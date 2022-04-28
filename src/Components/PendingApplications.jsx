@@ -23,6 +23,7 @@ import axios from 'axios'
 
 
 
+/* A function that is used to get the data from the API and display it in a table. */
 
 function PendingApplications() {
 
