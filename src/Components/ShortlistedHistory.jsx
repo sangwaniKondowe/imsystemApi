@@ -12,6 +12,7 @@ import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
 
 import {useStyles} from './BodyStyles'
 import axios from 'axios'
+/* A function that is called when the user clicks on the select element. */
 function History() {
   const classes = useStyles();
 
@@ -27,21 +28,30 @@ function History() {
     }
 
     const [selected, setSelected] = useState("2022");
+    /**
+     * I'm trying to get the data from the database and display it in the table.
+     */
     const handleSubmit = (e) => {
       e.preventDefault();
-        // console.log(selected)
+        
       
     const Url = "http://localhost:5000/application/getPrev?year="+ selected
     axios.get(Url)
     .then(response => {
       
-        console.log(response)
+        
     
      setData(response.data)
+     
+     
     
     })
     }
 
+    /**
+     * When the user changes the value of the select element, update the state of the component with
+     * the new value.
+     */
     const  handleChange = (event) => {
       setSelected(event.target.value);
     }
@@ -61,14 +71,23 @@ function History() {
           id: "year-simple"
         }}
         onClick={handleSubmit}
+        fullWidth
       >
         {years.map((year, index) => {
           return <MenuItem key={index} value={year}>{year}</MenuItem>;
         })}
       </Select>
     </FormControl>
-     <h1 style={{color:'red'}}>{data.totalShortlisted}helloo</h1>
+
+    
+  
+     
     </Box>
+
+    total previous applicants
+    {data.map((num) => (
+      <h3 style={{color:'red'}}>{num.totalShortlisted}</h3>
+    ))}
    <Box>
         <PageHeader pageTitle="previous Shortlisted"/>
 
